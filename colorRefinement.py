@@ -122,6 +122,7 @@ def compare(graphlisturl=-1, GI_only=False, gs=-1, preproc=False):
 	isomorphisms = []
 	undecided = []
 
+	# TODO: Insert tree check somewhere around/below here
 	for i in range(len(graphcolors)):  # find isomorphisms
 		for j in range(len(graphcolors)):
 			if i < j:
@@ -239,6 +240,7 @@ def splitColorDict(colordict, g):
 	return split, split2
 
 
+# Unused
 def compareColors(split):
 	global undecidedGraphs
 	r = []
