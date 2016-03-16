@@ -12,7 +12,10 @@
 \newtheorem{corollary}[theorem]{Corollary}
 
 \usepackage[sc]{mathpazo} % Use the Palatino font
+% Output encoding
 \usepackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
+% Input encoding
+\usepackage[utf8]{inputenc} % UTF-8 character encoding stuff
 \linespread{1.05} % Line spacing - Palatino needs more space between lines
 \usepackage{microtype} % Slightly tweak font spacing for aesthetics
 
@@ -46,6 +49,9 @@
 % Bibliography
 \usepackage[backend=bibtex, sorting=none]{biblatex}
 \bibliography{references.bib}
+
+% Appendices
+\usepackage[toc,page]{appendix} % appendix
 
 %----------------------------------------------------------------------------------------
 %	TITLE SECTION
@@ -101,18 +107,38 @@ Color refinement algorithms are used in solving the graph isomorphism problem, w
 
 %------------------------------------------------
 \section{Scope \& Objectives}
+The aim of this research paper is to calculate and compare the worst-case time complexity of both color refinement algorithms and verifying them using computational results. These results will be used to examine the differences in computation time between the algorithms for different types of graphs.
 
+This paper will describe both algorithms, give the calculations for the asymptotic worst-case time complexity, as well as an examination of the computational results.
 %------------------------------------------------
 \section{Methods}
+%% TODO %%
+% Describe experiment, setup, and method of testing
+%%
 
 %------------------------------------------------
-\section{Algorithms} %Descriptions + time complexity
+\section{Algorithms}
+%% TODO %%
+% Describe algorithms, show concise calculations of time complexity
+%%
 
 %------------------------------------------------
 \section{Results}
+%% TODO %%
+% Give and describe results
+%%
+
+%------------------------------------------------
+\section{Discussion} %Change section name?
+%% TODO %%
+% Describe the effectiveness of the algorithms on various types of graphs, and examine the differences
+%%
 
 %------------------------------------------------
 \section{Conclusions}
+%% TODO %%
+% Draw conlusions from both the results and discussion
+%%
 
 %----------------------------------------------------------------------------------------
 %	REFERENCE LIST
@@ -124,14 +150,15 @@ Color refinement algorithms are used in solving the graph isomorphism problem, w
 %----------------------------------------------------------------------------------------
 %	APPENDICES
 %----------------------------------------------------------------------------------------
+%% TODO %%
+% Put all the things that should be in the paper, but don't fit the main part here
+%%
 
-
-%----------------------------------------------------------------------------------------
-
+% Everything EXCEPT multicols can be removed from the appendices if none are added.
 \end{multicols}
-%\begin{appendices}
 
+\begin{appendices}
+\end{appendices}
 %----------------------------------------------------------------------------------------
 
-%\end{appendices}
 \end{document}
