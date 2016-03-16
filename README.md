@@ -1,1 +1,2 @@
 # Graph Isomorphisms Group 5
+NOTE: To generate/update the pdf-file and get the correct references, use the following build order: PdfLaTeX + Bib(la)tex + PdfLaTeX (x2) + View Pdf. In Texmaker, use can set this as the default quick build order under Options > Configure Texmaker > Quick Build.
