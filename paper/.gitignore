@@ -1,0 +1,5 @@
+# Created by .ignore support plugin (hsz.mobi)
+
+# This is to prevent a flood of merge conflicts in pdf files in this folder only
+*.pdf
+

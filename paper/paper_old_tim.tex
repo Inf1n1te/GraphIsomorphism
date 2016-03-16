@@ -1,0 +1,371 @@
+ \documentclass[twoside]{article}
+
+\usepackage{amsmath,amssymb,amsthm} % Mathematical Symbols, styles, etc
+
+\usepackage[utf8]{inputenc} % UTF-8 character encoding stuff
+\usepackage[toc,page]{appendix} % appendix
+
+\usepackage{array}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+
+
+% Used to enable use of the defined labeled enunciations. Usage: 
+%\begin{definition}text\end{definition}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+
+% Python code
+\usepackage{listings}
+\lstset{
+numbers=left,
+breaklines=true,
+tabsize=4
+}
+
+% --Optional-- Font and tweaking used in template
+\usepackage[sc]{mathpazo} % Use the Palatino font
+\usepackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
+\linespread{1.05} % Line spacing - Palatino needs more space between lines
+\usepackage{microtype} % Slightly tweak font spacing for aesthetics
+
+% Formatting, refs and stuff
+\usepackage[hmarginratio=1:1,top=32mm,columnsep=20pt]{geometry} % Document margins
+\usepackage{multicol} % Used for the two-column layout of the document
+\usepackage[hang, small,labelfont=bf,up,textfont=it,up]{caption} % Custom captions under/above floats in tables or figures
+\usepackage{booktabs} % Horizontal rules in tables
+\usepackage{float} % Required for tables and figures in the multi-column environment - they need to be placed in specific locations with the [H] (e.g. \begin{table}[H])
+\usepackage{hyperref} % For hyperlinks in the PDF
+
+% Fancy lists. Usage: http://lmgtfy.com/?q=latex+paralist
+\usepackage{paralist} % Used for the compactitem environment which makes bullet points with less space between them
+
+% Abstract customization
+\usepackage{abstract} % Allows abstract customization
+\renewcommand{\abstractnamefont}{\normalfont\bfseries} % Set the "Abstract" text to bold
+\renewcommand{\abstracttextfont}{\normalfont\small\itshape} % Set the abstract itself to small italic text
+
+% Title customization
+\usepackage{titlesec} % Allows customization of titles
+%\renewcommand\thesection{\Roman{section}} % Roman numerals for the sections
+%\renewcommand\thesubsection{\Roman{subsection}} % Roman numerals for subsections
+\titleformat{\section}[block]{\large\scshape}{\thesection.}{1em}{} % Change the look of the section titles
+\titleformat{\subsection}[block]{\large}{\thesubsection.}{1em}{} % Change the look of the section titles
+
+% Header and footer customization
+\usepackage{fancyhdr} % Headers and footers
+\pagestyle{fancy} % All pages have headers and footers
+\fancyhead{} % Blank out the default header
+\fancyfoot{} % Blank out the default footer
+\fancyhead[C]{T.\ Kemp, T.\ Kerkhoven, J.\ Klein Brinke, T.\ Sonderen: \shorttitle} % Custom header text
+\fancyfoot[RO,LE]{\thepage} % Custom footer text
+
+% Bibliography
+\usepackage[backend=bibtex, sorting=none]{biblatex}
+\bibliography{references_old_tim.bib}
+
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\newcommand{\articletitle}{The Effects of Preprocessing Methods on Computation Times for Graph Isomorphisms}
+\newcommand{\shorttitle}{Preprocessing for Graph Isomorphisms}
+
+\title{\vspace{-15mm}\fontsize{24pt}{10pt}\selectfont\textbf{\articletitle}} % Article title
+
+\author{
+\large
+\textsc{Tim Kemp, Tim Kerkhoven, Jeroen Klein Brinke, and Tim Sonderen}\\[2mm] % Your names
+\normalsize University of Twente \\ % Your institution
+\normalsize \href{mailto:t.kerkhoven@student.utwente.nl}{t.kerkhoven@student.utwente.nl}, 
+\href{mailto:t.kemp@student.utwente.nl}{t.kemp@student.utwente.nl},\\ \normalsize
+\href{mailto:j.klein.brinke@student.utwente.nl}{j.klein.brinke@student.utwente.nl}, \href{mailto:t.sonderen@student.utwente.nl}{t.sonderen@student.utwente.nl}% Your email addresses
+}
+
+\date{\today}
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+\thispagestyle{empty}
+\maketitle % Insert title
+
+%----------------------------------------------------------------------------------------
+%	ABSTRACT
+%----------------------------------------------------------------------------------------
+
+\begin{abstract}
+
+This research paper shows how a certain preprocessing method, namely the finding and replacing of (false) twins, can be used to decrease the computation time on the graph isomorphism (GI) problem. The hypothesis of this study was that finding and replacing sets of (false) twins by a single colored node will decrease the computation time on finding isomorphisms between graphs. The paper also contains a mathematical proof which supports the claim that (false) twins can be replaced by a single colored node. During the project, an algorithm has been developed to find and replace these (false) twins.  The algorithm computed different types of graphs with preprocessing both on and off. The results of these computational experiments have been compared and based on the differences in computation time a conclusion has been drawn. This conclusion is that it heavily depends on the type of graph: the more (false) twins a graph has, the faster a graph can be processed. The time of finding all the (false) twins can be neglected. The results also showed that for some graphs for which the GI problem cannot be solved in reasonable time without this preprocessing method, they could be solved with this preprocessing method. 
+
+\end{abstract}
+
+%----------------------------------------------------------------------------------------
+%	ARTICLE CONTENTS
+%----------------------------------------------------------------------------------------
+
+\begin{multicols}{2} % Two-column layout throughout the main article text
+
+%------------------------------------------------
+\section{Introduction} 
+
+This paper will discuss the effect of a certain preprocessing method on the computation time of the graph isomorphism problem. This paper will mostly focus on the algorithms and their correctness, in combination with computational experiments and their results.
+
+The graph isomorphism problem is the computational problem of determining whether two finite graphs are isomorphic. Besides its practical importance, the graph isomorphism problem is a curiosity in computational complexity theory as it is one of the few problems belonging to NP neither known to be solvable in polynomial time nor NP-complete: it is one of only 12 such problems listed by Garey \& Johnson (1979)\cite{book:garyJohnson1979}, and one of only two on that list whose complexity remains unresolved. As of 2008 the best algorithm (Eugene Luks, 1983) has run time $2^{O(\sqrt{n log n})}$ for graphs with \emph{n} vertices.\cite{article:davidJohnson2005}\cite{inproceedings:babaiCodenotti2008}\cite{website:wikiGI}
+
+The preprocessing part consists of algorithms that look at the graphs before determining whether they are isomorphic with the intent of finding some characteristic that might be used to speed up the actual process of the determining whether the graphs are isomorphic.
+
+%------------------------------------------------
+
+\section{Scope \& Objectives}
+
+The aim of this research paper is to determine whether a certain preprocessing method significantly reduces the time required to check whether two graphs are isomorphic. At the core, two cases will be compared: a basic case without preprocessing and a case with preprocessing. 
+
+For this paper, the time complexity of the algorithms will be calculated. The difference in performance between the cases will be shown by computational results.
+
+This paper will give a description of the algorithms used for preprocessing, as well as proof of correctness. The algorithms used to check for isomorphisms will be left out of consideration.
+
+%------------------------------------------------
+\section{Methods}
+To determine whether the algorithms will speed up the process of finding graph isomorphisms, a computational experiment was performed. In this experiment, the algorithms were used on a variety of differently shaped graphs, and sets of graphs, in conjunction with an algorithm which checks for isomorphisms.
+
+\subsection{Experiment Setup}
+For the testing, a single computer was used to collect all the timed data. The tests were run in JetBrains' PyCharm, using the built-in functions to run the python code. The python interpreter used was Python 3.4 and the computer was running Windows 10 Pro Technical Preview (at 3.75 GHz (average speed, max 3.9 GHz) and 8.00 GB) at the time of the testing. Efforts were made to ensure all the testing was performed under the same circumstances.
+
+\subsection{Testing}
+In the experiment, two cases were tested: a basic case, without preprocessing, and a case with preprocessing. In both cases a timer was added to the code. The timer started before any other piece of code and ended after the algorithms were completely finished. This way all the required computations are timed, including the loading of the graph, the additional time used to run preprocessing algorithms and the finding of isomorphisms.
+
+For every chosen test instance, the run time of both algorithms was determined. After all instances were computed, the results were compared.
+
+%------------------------------------------------
+\section{Description of Algorithms}
+For hard instances of the graph isomorphism problem, the coarsest stable coloring of a graph still has colors which are not unique. Two structures for which this is the case are twins and false twins, they are defined in definition \ref{deftwins} and \ref{deffalsetwins}.
+\begin{definition}
+Let $G = (V,E)$ be a graph. The \emph{neighbourhood} $N(v)$ of $v \in V$ is:
+$N(v) = \left\{{u \in V : \{u,v\} \in E}\right\}$
+\end{definition}
+\begin{definition}\label{deftwins}
+Let $G = (V,E)$ be a graph.
+Two vertices $u, v \in V$ are \emph{twins} if $\{u,v\} \in E$ and $N(u)\textbackslash \{v\} = N(v)\textbackslash \{u\}$.
+\end{definition}
+\begin{definition}\label{deffalsetwins}
+Let $G = (V,E)$ be a graph.
+Two vertices $u, v \in V(G)$ are \emph{false twins} if $N(u) = N(v).$
+\end{definition}
+
+To solve the graph isomorphism problem more efficiently, we use preprocessing algorithms to replace twins and false twins by single precolored vertices such that:
+\begin{compactenum}
+\item Vertices in the new graph have the same color $\iff$ The corresponding twinsets or false twinsets in the old graph have the same size (number of vertices).
+\item Two vertices in the new graph cannot have the same color if one of them corresponds to a twinset and the other one two a false twinset in the old graph.
+\end{compactenum}
+
+\subsection{Implementation}
+The algorithm is divided into two subroutines. The subroutine \emph{gettwins} finds all twins and false twins and the subroutine \emph{preprocessing} replaces each (false) twin by a single colored vertex as described above. In the following subsections these algorithms and their worst case time complexities will be analyzed. The elementary operation is the comparison of two elements. In those subsections $n$ is the number of vertices of graph $G = (V,E)$ and $m$  the number of edges of graph $G$.
+
+\subsubsection{Finding twins and false twins}
+The subroutine \emph{gettwins} can be found in appendix \ref{gettwins}. In line 2-10 two lists, \emph{nbs} and \emph{nbs2}, are created. Both lists contains $n$ sorted sublists. In the former list each sublist contains all the neighbours of a node and in the latter each sublist contains all the neighbours of a node and also the node itself. Finding all the neighbours only requires going though all the edges once, so the time complexity is $O(m)$. The sorting algorithm has time complexity $O(y \log y)$, $y=$max(len($x$)), $x \in $ \emph{nbs} < $O(n \log n)$, but since it is in a for loop of length $n$ the overall time complexity becomes at most $O(n^2 \log n)$. 
+
+In line 11-16 a dictionary \emph{falsetwins} is created where the keys are all the items from \emph{nbs} and the values are lists of the corresponding vertices. The worst case time complexity of checking if an item is in a dictionary is $O(k+l)$ where $k$ is the number of keys and $l$ the length of the key, which is a tuple. However, the average case is only $O(l)$ \cite{website:pythonTimeComplexity}.  $l\leq n$ and $k\leq n$, and this dictionary operation is in a for loop of length $n$, so the worst case time complexity of this is $O(n^3)$, but the average case is $O(n^2)$. In line 23 the items in the \emph{falsetwins} with only one vertex as value are removed. This is $O(n)$, since len() has $O(1)$.\cite{website:pythonTimeComplexity} The remaining values of the dictionary \emph{falsetwins} are now all the sets of false twins as defined in definition \ref{deffalsetwins}. A similar dictionary \emph{twins} is created where the keys are the items from \emph{nbs2}. The worst case time complexity of \textit{gettwins} is thus $O(n^3)$.
+
+
+\subsubsection{Replacing the twins}
+The subroutine \emph{preprocessing} can be found in appendix \ref{preprocessing}. In line 2 the twins and falsetwins are defined and if there are none, the program will terminate. If there are any twins, all edges with a head or tail in one of these twins will be deleted. The complexity of this is $O(mv) < O (nm)$, where $v$ is the number of vertices in (\emph{twins}+\emph{falsetwins}). Then in line 13-19 all vertices which are in twins or falsetwins will be removed. The complexity of this is $O(nv) < O(n^2)$. In line 20-26 a new colored vertex will be added for each (false) twin $(O(n))$ and finally the edges from these vertices will be added ($O(n^2 (n+m))$). The worst case time complexity of this algorithm is ($O(n^2 (n+m)$), but if there are only $v$ vertices which are \emph{twins} or \emph{falsetwins} and they have maximally $w$ neighbours, the complexity is $O(vw) (n+m)$.
+
+%------------------------------------------------
+\section{Proof of Correctness}
+\begin{definition}
+A \emph{colored} graph $G(E,V)$ is a graph where each vertex $v \in V$ has a color label.
+\end{definition}
+\begin{definition}\label{def:iso}
+Let $G_1 = (V_1, E_1)$ and $G_2 = (V_2, E_2)$ be two undirected graphs. A function $f: V_1 \to V_2$ is called a \emph{graph isomorphism} if:
+\begin{compactenum}[\upshape(a)]
+\item $f$ is a bijection. \label{voorwaarde1}
+\item $\forall a, b \in V_1, \{a, b\} \in E_1$ if and only if $\{f(a), f(b)\} \in E_2$.\label{voorwaarde2}
+\end{compactenum}
+When such a function exists, $G_1$ and $G_2$ are called \emph{isomorphic graphs}. 
+\end{definition}
+\begin{definition}\label{def:coloriso}
+Let $G_1 = (V_1, E_1)$ and $G_2 = (V_2, E_2)$ be two undirected colored graphs. A function $f: V_1 \to V_2$ is called a \emph{colored graph isomorphism} if: 
+\begin{compactenum}[\upshape(a)]
+\item $f$ is a graph isomorphism.\label{voorwaarde4}
+\item $\forall v \in V_1$: $color(v)$ = $color (f(v)$. \label{voorwaarde3}
+\end{compactenum}
+When such a function exists, $G_1$ and $G_2$ are called \emph{colored isomorphic graphs}. 
+\end{definition}
+\begin{theorem}
+Let $G_1 = (V_{G1}, E_{G1})$ and $G_2 = (V_{G2}, E_{G2})$ be two undirected  graphs and let $H_1 = (V_{H1}, E_{H1})$ and $H_2 = (V_{H2}, E_{H2})$ be resp. the same graphs as $G_1$ and $G_2$ where vertices which are not (false) twins with any other vertex get color 0 and each (false) twin is replaced by a colored vertex such that: \begin{compactenum}[\upshape(a)]
+\item Vertices in $H_1$ ($H_2$) have the same color $\iff$ The corresponding twinsets or false twinsets in $G_1$ ($G_2$) have the same size (number of vertices).
+\item Two vertices in $H_1$ ($H_2$) cannot have the same color if one of them corresponds to a twinset in $G_1$ ($G_2$) and the other one corresponds to a false twinset in $G_1$ ($G_2$). They also cannot have color 0.
+\end{compactenum}
+Graph $G_1$ and $G_2$ are isomorphic $\iff$ Graph $H_1$ and $H_2$ are colored isomorphic.
+\end{theorem}
+\begin{proof}
+%We shall define $f_i$: $G_i\to H_i$ as the transformation descriped above and   and $f_i^{-1}$: $H_i\to G_i$ as the inverse of that transformation. Note that $f_i^{-1}$ maps a vertex with color $\neq$ 0 to a set of twins or falsetwins. Also w.l.o.g we assume $f$ gives color (
+
+
+$\Leftarrow$:  $\exists$ colored graph isomorphism $h: H_1 \to H_2$. If $v \in V_{H1}$ has color 0: we define $g(v) = h(v)$.
+If $v \in V_{H1}$ has color $\neq$ 0, $\exists$ $ w \in V_{H2}$ such that color($v$) = color($w$) (since $H_1$ and $H_2$ are isomorphs). $v$ and $w$ either have resp. corresponding false twinsets \emph{ftw} $\subseteq V_{G1}$ and \emph{ftw2} $\subseteq V_{G2}$ or they have resp. corresponding twinsets \emph{tw} $\subseteq V_{G1}$ and \emph{tw2} $\subseteq V_{G2}$. In the first case $g$ maps each $x \in$ \emph{ftw} to a different $y \in$ \emph{ftw2}. Since they are false twins it does not matter which $x$ is mapped to which $y$. In the second case $g$ maps $x \in$ \emph{tw} to $y \in$ \emph{tw2} similarly. 
+
+We want to prove that $g: G_1 \to G_2$ is a graph isomorphism. $V_{H1}$ and $V_{H2}$ have the same size and each $v_1 \in V_{H1}$ corresponds to a $v_2 \in V_{H1}$ with the same color. The colors of $v_1$ and $v_2$ defines the sizes of the corresponding (false) twinsets in resp. $G_{H1}$ and $G_{H2}$, thus $G_{H1}$ and $G_{H2}$ also have the same size. Since $g$ is defined such that it is an injection and $V_{G1}$ and $V_{G2}$ have the same size, $g$ is a bijection \cite{website:proofwiki}. Thus condition \ref{voorwaarde1} of definition \ref{def:iso} is satisfied. 
+
+Define a module $M_i \subseteq V_{G1}: \{v \in V_{G1}$ $|$ corresponding vertex in $H_1$ has color $i \}$. $\forall a, b \in V_{G1}$, $a \in M_i$ and $b$ $\in$ $M_j$ for some $i,j$: 
+\begin{compactenum}
+\item if $i = j$: $\{a,b\} \in E_{G1} \iff \{c,d\} \in E_{H1}$. $c,d$ are the corresponding vertices of resp. $a,b$. $\{c,d\} \in E_{H1} \iff \{h(c),h(d)\} \in E_{H2} \iff \{g(a),g(b)\} \in E_{G2}$, because $g(a)$ and $g(b)$ are elements of the corresponding (false) twinset of resp. $c$ and $d$ and all those elements have the same neighbours. 
+\item if $i \neq j$: If $M_i$ is a false twin, $\{a,b\} \notin E_{G1} $ and $\{g(a),g(b)\} \in E_{G2}$. If $M_j$ is a twin $\{a,b\} \in E_{G1} $ and $\{g(a),g(b)\}\in E_{G2}$. If $i = 0$, the loop consists in $G_1 \iff$ it exists in $H_1 \iff$ it exists in $H_2 \iff$ it exists in $G_2$.
+\end{compactenum} 
+$\forall a, b \in V_{G1}, \{a, b\} \in E_{G1} \iff \{g(a), g(b)\} \in E_{G2}$.
+Thus condition \ref{voorwaarde2} of definition \ref{def:iso} is satisfied and $g$ is a graph isomorphism. 
+
+
+$\Rightarrow$: $\exists$ graph isomorphism $g: G_1 \to G_2$. $\forall M_i (G_1) \subseteq V_{G1}, M_i (G_2) \subseteq V_{G2}$. The function $h$ maps the corresponding vertex of $M_i (G_1)$ in $H_1$ (with color i) to the corresponding vertex of $M_i (G_2)$ in $H_2$ (with color i).
+
+We want to prove that $h: H_1 \to H_2$ is a colored graph isomorphism. It is defined such that it is color preserving, so condition \ref{voorwaarde3} of definition \ref{def:coloriso} is satisfied. For each $M_i (G_1) \subseteq V_{G1}$ $\exists$ $M_i (G_2) \subseteq V_{G2}$ with the same size and each $M_i$ in $G$ is a single vertex in $H$. Thus $V_{H1}$ and $V_{H2}$ have the same size (since $V_{G1}$ and $V_{G2}$ have the same size). Since $G_1$ and $G_2$ are isomorphic, they contain the same modules $M_i$. Thus $h$ can map each corresponding vertex of $M_i (G1)$ to a unique corresponding vertex of $M_i (G2)$. So $h$ is an injection and $V_{H1}$ and $V_{H2}$ have the same size, thus $h$ is also a bijection \cite{website:proofwiki}.
+
+$\forall a, b \in V_{H1}$: color($a$) = i, color($b$) = j, $a$ corresponds to $M_i (G_1)$ and $b$ corresponds to $M_j (G_1)$. If $i=j: M_i$ and $M_j$ can either be the same set of (false) twins or different sets of equal size and both twins or both false twins.  $ \{a, b\} \in E_{H1} \iff \{c,d\} \in E_{G1}, c \in  M_i, d \in  M_j \iff \{g(c),g(d)\} \in E_{G2} \iff \{h(a),h(b)\} \in E_{H2}$. Because $h(a)$ and $h(b)$ corresponds to resp. $g(c)$ and $g(d)$. By definition \ref{def:iso}, $h$ is graph isomorphism. Condition \ref{voorwaarde4} of definition \ref{def:coloriso} is satisfied and $h$ is a colored graph isomorphism.
+
+
+
+
+\end{proof}
+
+%------------------------------------------------
+\section{Results}
+
+The results of the experiment are shown in table \ref{table:results}. Seven sets of graphs were tested for isomorphisms and in three cases the computation time was significantly shorter. In the other cases, the preprocessing time is relatively short compared to the total computing time. This is because the low complexity of \emph{gettwins} and the fact that \emph{preprocessing} does nothing when there are no (false) twins. The difference in computation time is not related to the preprocessing time, as the preprocessing time is not equal to the difference in computation times. This is likely due to the circumstances of both executions of the algorithms not occurring under the exact same circumstances, as it was impossible to ensure the conditions were the same.  
+
+Due to the large differences in computation times relative to the preprocessing time, only significant differences in computation time will be used as indication of increase or decrease in speed.
+
+The preprocessing times for single graphs with $n$ nodes can be found in table \ref{table:results2}. These graphs contain no (false) twins, so these times are  only of the subroutine \emph{gettwins}. This is the extra computation time in case the preprocessing does nothing. 
+
+%------------------------------------------------
+\section{Conclusions}
+
+In three of the seven test cases the computation time increased significantly. In the other four there was no significant difference in the computation times.
+
+Thus, it can be concluded that this preprocessing method reduces the computation time needed to find isomorphisms between graphs that have (false) twins.
+
+%----------------------------------------------------------------------------------------
+%	REFERENCE LIST
+%----------------------------------------------------------------------------------------
+
+\printbibliography
+%bibliography{references}
+
+%----------------------------------------------------------------------------------------
+
+
+
+\end{multicols}
+\begin{appendices}
+
+\section{Python code}
+\lstset{language=Python}
+\begin{lstlisting}[label={gettwins}]
+def gettwins(g):
+	nbs = []
+	nbs2 = []
+	for vertex in g.V():
+		nb = vertex.nbs()[:]
+		nb.sort(key=lambda x: x._label)
+		nbs.append(tuple(nb))
+		nb.append(vertex)
+		nb.sort(key=lambda x: x._label)
+		nbs2.append(tuple(nb))
+	falsetwins = {}
+	for i, item in enumerate(nbs):
+		if item in falsetwins.keys():
+			falsetwins[item].append(g.V()[i])
+		else:
+			falsetwins[item] = [g.V()[i]]
+	twins = {}
+	for i, item in enumerate(nbs2):
+		if item in twins.keys():
+			twins[item].append(g.V()[i])
+		else:
+			twins[item] = [g.V()[i]]
+	falsetwins = {k: v for k, v in falsetwins.items() if len(v) > 1}
+	twins = {k: v for k, v in twins.items() if len(v) > 1}
+	return list(falsetwins.values()), list(twins.values()), list(falsetwins.keys()), list(twins.keys())   
+\end{lstlisting}
+
+
+\begin{lstlisting}[label={preprocessing}]
+def preprocessing(g):
+	falsetwins, twins, falsetwinsN, twinsN = gettwins(g)
+	lftwins = len(falsetwins)
+	ltwins = len(twins)
+	if lftwins != 0 or ltwins != 0:
+		deledges = []
+		for i, e in enumerate(g._E):
+			if any(e._tail in ftwin for ftwin in falsetwins) or any(e._head in ftwin for ftwin in falsetwins) or any(e._tail in twin for twin in twins) or any(e._head in twin for twin in twins):
+		deledges.append(i)
+		deledges.sort(reverse=True)
+		for i in deledges:
+			g._E.pop(i)
+		delnodes = []
+		for i, V in enumerate(g._V):
+			if any(V in ftwin for ftwin in falsetwins) or any(V in twin for twin in twins):
+				delnodes.append(i)
+		delnodes.sort(reverse=True)
+		for i in delnodes:
+			g._V.pop(i)
+		combined = falsetwinsN + twinsN
+		for i, twin in enumerate(falsetwins):
+			g.addvertexobject(twin[0], True, len(twin))
+			twin[0].colornum = -twin[0].twinsize
+		for i, twin in enumerate(twins):
+			g.addvertexobject(twin[0], True, len(twin))
+			twin[0].colornum = twin[0].twinsize
+		for i, twin in enumerate(falsetwins + twins):
+			for j in combined[i]:
+				if j in g.V() and twin[0] != j and not g.findedge(twin[0],k)
+					g.addedge(twin[0], j)
+		g._V.sort(key=lambda x: x._label)
+	return g, lftwins, ltwins
+\end{lstlisting}
+
+\section{Tables with computation times}
+\begin{table}[h]\centering
+\begin{tabular}{c|C{0.3\textwidth}|C{0.3\textwidth}|c}
+Graph & Computation time (without preprocessing) & Computation time (with preprocessing) & Preprocessing time \\
+\hline
+cographs1 & 6.6017 sec & 0.0048 sec & 0.0027 sec \\
+hugecographs & >7 hours & 29.8713 sec & 0.0214 sec \\
+cycles175 & 13.7522 sec & 13.9265 sec & 0.0238 sec\\
+bigtrees3 & 0.9652 sec & 0.2700 sec & 0.0323 sec\\
+cubes6 & 0.5967 sec & 0.5877 sec & 0.0072 sec\\
+products72 & 0.6083 sec & 0.6353 sec & 0.0123 sec\\
+torus72 & 3.5590 sec & 3.6059 sec & 0.0106 sec\\
+\end{tabular}
+\caption{Table showing the result from the experiment. For each set of graphs, it shows the computation time without and with preprocessing time, as well as the time it took to perform the preprocessing.}
+\label{table:results}
+\end{table}
+\begin{table}[h]\centering
+
+\begin{tabular}{c|c}
+n & time \\
+\hline
+34 & 0.0017\\
+66 & 0.0032\\
+130 & 0.0071\\
+258 & 0.0161\\
+514 & 0.0344\\
+1026 & 0.0805\\
+2050 & 0.2019\\
+4098 & 0.5874\\
+8194 & 2.7102
+
+\end{tabular}
+\caption{Table showing various preprocessing times, for graphs with $n$ nodes and no (false) twins.}
+\label{table:results2}
+\end{table}
+\end{appendices}
+
+\end{document}

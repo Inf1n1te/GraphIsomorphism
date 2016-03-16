@@ -1,0 +1,137 @@
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[twoside]{article}
+
+\usepackage{amsmath,amssymb,amsthm} % Mathematical Symbols, styles, etc
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\usepackage[sc]{mathpazo} % Use the Palatino font
+\usepackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
+\linespread{1.05} % Line spacing - Palatino needs more space between lines
+\usepackage{microtype} % Slightly tweak font spacing for aesthetics
+
+\usepackage[hmarginratio=1:1,top=32mm,columnsep=20pt]{geometry} % Document margins
+\usepackage{multicol} % Used for the two-column layout of the document
+\usepackage[hang, small,labelfont=bf,up,textfont=it,up]{caption} % Custom captions under/above floats in tables or figures
+\usepackage{booktabs} % Horizontal rules in tables
+\usepackage{float} % Required for tables and figures in the multi-column environment - they need to be placed in specific locations with the [H] (e.g. \begin{table}[H])
+\usepackage{hyperref} % For hyperlinks in the PDF
+
+\usepackage{lettrine} % The lettrine is the first enlarged letter at the beginning of the text
+\usepackage{paralist} % Used for the compactitem environment which makes bullet points with less space between them
+
+\usepackage{abstract} % Allows abstract customization
+\renewcommand{\abstractnamefont}{\normalfont\bfseries} % Set the "Abstract" text to bold
+\renewcommand{\abstracttextfont}{\normalfont\small\itshape} % Set the abstract itself to small italic text
+
+\usepackage{titlesec} % Allows customization of titles
+%\renewcommand\thesection{\Roman{section}} % Roman numerals for the sections
+%\renewcommand\thesubsection{\Roman{subsection}} % Roman numerals for subsections
+\titleformat{\section}[block]{\large\scshape}{\thesection.}{1em}{} % Change the look of the section titles
+\titleformat{\subsection}[block]{\large}{\thesubsection.}{1em}{} % Change the look of the section titles
+
+\usepackage{fancyhdr} % Headers and footers
+\pagestyle{fancy} % All pages have headers and footers
+\fancyhead{} % Blank out the default header
+\fancyfoot{} % Blank out the default footer
+\fancyhead[C]{W.G. Puttenstein, R.L.H. Fontein, H.D. van Wieren, T. Kerkhoven: \shorttitle} % Custom header text
+\fancyfoot[RO,LE]{\thepage} % Custom footer text
+
+% Bibliography
+\usepackage[backend=bibtex, sorting=none]{biblatex}
+\bibliography{references.bib}
+
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\newcommand{\articletitle}{Comparison between Time Complexity of Different Color Refinement Algorithms in Graph Isomorphism}
+\newcommand{\shorttitle}{Color Refinement Time Complexity in Graph Isomorphism}
+
+\title{\vspace{-15mm}\fontsize{24pt}{10pt}\selectfont\textbf{\articletitle}} % Article title
+
+\author{
+\large
+\textsc{Gerwin Puttenstein, Rick Fontein, Huub van Wieren, and Tim Kerkhoven}\\[2mm] % Your name
+\normalsize University of Twente \\ % Your institution
+\normalsize \href{mailto:w.g.puttenstein@student.utwente.nl}{w.g.puttenstein@student.utwente.nl}, 
+\href{mailto:r.l.h.fontein@student.utwente.nl}{r.l.h.fontein@student.utwente.nl},\\
+\normalsize \href{mailto:h.d.vanwieren@student.utwente.nl}{h.d.vanwieren@student.utwente.nl},
+\href{mailto:t.kerkhoven@student.utwente.nl}{t.kerkhoven@student.utwente.nl}% Your email addresses
+}
+
+\date{\today}
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+\thispagestyle{empty}
+\maketitle % Insert title
+
+%----------------------------------------------------------------------------------------
+%	ABSTRACT
+%----------------------------------------------------------------------------------------
+
+\begin{abstract}
+
+\noindent Test
+
+\end{abstract}
+
+%----------------------------------------------------------------------------------------
+%	ARTICLE CONTENTS
+%----------------------------------------------------------------------------------------
+
+\begin{multicols}{2} % Two-column layout throughout the main article text
+
+
+
+%------------------------------------------------
+\section{Introduction}
+This paper will compare the time complexity of two color refinement algorithms and confirm them with computational results. The first algorithm uses the color refinement algorithm as shown by J. de Jong\cite{presentation:slidesPartI}, while the other algorithm is based on DFA minimization as shown by P. Bonsma\cite{presentation:slidesPartIII}. The algorithms have been implemented and their computation times on test sets will be used to confirm the time complexity.
+
+Color refinement algorithms are used in solving the graph isomorphism problem, which is the computational problem of determining whether two finite graphs are isomorphic. It is one of a very small number of problems belonging to NP neither known to be solvable in polynomial time nor NP-complete: it is one of 12 such problems listed by Garey \& Johnson (1979)\cite{book:gareyJohnson1979}, and the only one of that list whose complexity remains unresolved.\cite{website:wikiGI}
+
+%------------------------------------------------
+\section{Scope \& Objectives}
+
+%------------------------------------------------
+\section{Methods}
+
+%------------------------------------------------
+\section{Algorithms} %Descriptions + time complexity
+
+%------------------------------------------------
+\section{Results}
+
+%------------------------------------------------
+\section{Conclusions}
+
+%----------------------------------------------------------------------------------------
+%	REFERENCE LIST
+%----------------------------------------------------------------------------------------
+ 
+\printbibliography
+%bibliography{references}
+
+%----------------------------------------------------------------------------------------
+%	APPENDICES
+%----------------------------------------------------------------------------------------
+
+
+%----------------------------------------------------------------------------------------
+
+\end{multicols}
+%\begin{appendices}
+
+%----------------------------------------------------------------------------------------
+
+%\end{appendices}
+\end{document}
