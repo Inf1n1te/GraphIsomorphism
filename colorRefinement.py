@@ -1,3 +1,5 @@
+import sys
+
 __author__ = 'Tim (& [Jeroen])'
 
 import copy
@@ -435,7 +437,10 @@ def componentpreproc(graphlisturl):
 
 start_time = time.clock()
 
-compare("GI_TestInstancesWeek1/products72.grl", False)  # #aut for product72
+sys.setrecursionlimit(10000)
+
+compare("GI_TestInstancesWeek1/colorref_largeexample_6_960.grl", True)  # GI for large 4 1026
+# compare("GI_TestInstancesWeek1/products72.grl", False)  # #aut for product72
 # compare("GI_TestInstancesWeek1/torus72.grl", False)  # #aut for torus72
 # compare("GI_TestInstancesWeek1/cubes6.grl", True)  # GI for cubes6
 # compare("GI_TestInstancesWeek1/bigtrees3.grl", True)  # GI for bigtrees3
