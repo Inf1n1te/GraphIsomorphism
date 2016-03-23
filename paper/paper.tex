@@ -53,6 +53,10 @@
 % Appendices
 \usepackage[toc,page]{appendix} % appendix
 
+% Additional column type
+\usepackage{array}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+
 %----------------------------------------------------------------------------------------
 %	TITLE SECTION
 %----------------------------------------------------------------------------------------
@@ -139,6 +143,8 @@ Only the algorithms themselves were timed, initialization and other parts of the
 %% TODO %%
 % Give and describe results
 %%
+% Table for results can be found at appendices
+
 
 %------------------------------------------------
 \section{Discussion} %Change section name?
@@ -172,7 +178,46 @@ Only the algorithms themselves were timed, initialization and other parts of the
 \end{multicols}
 
 \begin{appendices}
-\label{appendices}
+\label{app}
+
+%------------------------------------------------
+\section{Tables} %Change section name
+\label{app:tab}
+%% TODO %%
+% Fill table with actual values
+%%
+%% NOTE %%
+% All current values are fictional values for testing purposes only
+%%
+\begin{table}[h]\centering
+\label{app:tab:0}
+\begin{tabular}{|l|r@{.}l|r@{.}l|}
+\hline
+Graph	
+	& \multicolumn{2}{l|}{Algorithm A \emph{(s)}}
+	& \multicolumn{2}{l|}{Algorithm B \emph{(s)}} \\
+\hline
+graph\_{}type1\_{}16
+	& 0	& 001
+	& 0	& 005 \\
+graph\_{}type1\_{}64
+	& 0	& 1	
+	& 0	& 1 \\
+graph\_{}type1\_{}256
+	& 10	& 0	
+	& 2		& 0\\
+graph\_{}type1\_{}1024
+	& 1000	& 0 
+	& 40	& 0 \\
+graph\_{}type1\_{}4096
+	& 100000	& 0
+	& 800		& 0 \\
+\hline
+\end{tabular}
+\caption{This is a table}
+\end{table}
+%------------------------------------------------
+
 \end{appendices}
 %----------------------------------------------------------------------------------------
 
