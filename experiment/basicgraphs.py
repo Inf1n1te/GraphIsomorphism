@@ -8,13 +8,13 @@ The interface of these classes is extensive and allows programming all kinds of 
 However, the data structure used is quite basic and inefficient: a graph object stores only a vertex list and an edge
 list, and methods such as adjacency testing / finding neighbors of a vertex require going through the entire edge list!
 """
-# version: 29-01-2015, Paul Bonsma
 
 
-unsafe = False
+# Original: 29-01-2015, Paul Bonsma
+# Improved: 28-03-2016, Rick Fontein
 
 
-# Set to True for faster, but unsafe listing of all vertices and edges.
+
 
 class GraphError(Exception):
     def __init__(self, message):
@@ -81,6 +81,9 @@ class Vertex:
         self._incidence_list.append(e)
         self._degree += 1
 
+    def label(self):
+        return self._label
+
 
 class Edge:
     """
@@ -141,12 +144,14 @@ class Graph:
      <_nextlabel> is used to assign default labels to vertices.
     """
 
-    def __init__(self, n: int = 0, simple: bool = False):
+    def __init__(self, n: int = 0, simple: bool = False, unsafe: bool = False):
         """
         Creates a graph.
         Optional argument <n>: number of vertices.
         Optional argument <simple>: indicates whether the graph should stay simple.
         """
+        self.unsafe = unsafe  # Set to True for faster, but unsafe listing of all vertices and edges.
+
         self._vertices = []
         self._edges = []
         self._directed = False
@@ -166,7 +171,7 @@ class Graph:
         """
         Returns the list of vertices of the graph.
         """
-        if unsafe:  # but fast
+        if self.unsafe:  # but fast
             return self._vertices
         else:
             return self._vertices[:]  # return a *copy* of this list
@@ -175,7 +180,7 @@ class Graph:
         """
         Returns the list of edges of the graph.
         """
-        if unsafe:  # but fast
+        if self.unsafe:  # but fast
             return self._edges
         else:
             return self._edges[:]  # return a *copy* of this list

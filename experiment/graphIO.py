@@ -39,7 +39,7 @@ def readgraph(graphclass, readline):
         try:
             S = readline()
             n = int(S)
-            G = graphclass(n)
+            G = graphclass(n, unsafe=True)
             break
         except ValueError:
             if len(S) > 0 and S[-1] == '\n':

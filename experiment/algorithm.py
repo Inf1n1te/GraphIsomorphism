@@ -1,3 +1,5 @@
+import copy
+
 from experiment.basicgraphs import *
 
 
@@ -79,29 +81,69 @@ def color_refine(g: Graph):
         raise GraphError("Graph has no color dictionary")
 
 
+def branching(g: Graph):
+    possible = []
+    g.colors_freq = {}
+    for v in g.vertices():
+        if v.colornum in g.colors_freq:
+            g.colors_freq[v.colornum].append(v)
+
+            if len(g.colors_freq[v.colornum]) >= 4:
+                if v.colornum not in possible:
+                    possible.append(v.colornum)
+        else:
+            g.colors_freq[v.colornum] = [v]
+
+    if possible:  # empty list is false
+        for c in possible:
+            cmpl = g.number_of_vertices() / 2
+            branches = []  # label numbers of possible branches
+            branch_label = None
+            for w in g.colors_freq[c]:
+                l = w.label()
+                if l < cmpl:
+                    branches.append(l)
+                else:
+                    branch_label = l
+
+            branch_color = new_color(g)
+            for b in branches:
+                h = copy.deepcopy(g)
+                bv = h[branch_label]
+                bv.colornum = branch_color
+                h[b].colornum = branch_color
+                h.color_dict[branch_color] = (bv.degree(), create_nbs_dict(bv))
+                color_refine(h)
+                return isomorph_test(h)
+    print('fuck')
+
+
 def isomorph_test(g: Graph):
+    colors0 = [0] * g.number_of_vertices()
     colors1 = [0] * g.number_of_vertices()
-    colors2 = [0] * g.number_of_vertices()
     cmpl = g.number_of_vertices() / 2
     for i in g.vertices():
-        if i._label < cmpl:
-            colors1[i.colornum] += 1
+        if i.label() < cmpl:
+            colors0[i.colornum] += 1
         else:
-            colors2[i.colornum] += 1
-    if colors1 == colors2:
-        if max(colors1) == 1:
+            colors1[i.colornum] += 1
+    if colors0 == colors1:
+        if max(colors0) == 1:
             return True
         else:
-            # Need branching
-            return None
+            return branching(g)
     else:
         return False
 
 
-def disjoint_union(g: Graph, h: Graph) -> Graph:
+def prerequisites(g: Graph, h: Graph) -> bool:
+    return len(g.vertices()) == len(h.vertices()) and len(g.edges()) == len(h.edges())
+
+
+def disjoint_union(g: Graph, h: Graph, unsafe: bool = False) -> Graph:
     # Stolen from blackboard.
     vertex_map = {}
-    r = Graph()
+    r = Graph(unsafe=unsafe)
     for v in g.vertices() + h.vertices():
         vertex_map[v] = r.add_vertex()
     for e in g.edges() + h.edges():
