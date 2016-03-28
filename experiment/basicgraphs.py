@@ -45,7 +45,7 @@ class Vertex:
 
     def __repr__(self):
         if hasattr(self, "colornum"):
-            return"(" + str(self._label) + ", c=" + str(self.colornum) + ")"
+            return "(" + str(self._label) + ", c=" + str(self.colornum) + ")"
         else:
             return str(self._label)
 
@@ -80,9 +80,6 @@ class Vertex:
     def add_nb(self, e):
         self._incidence_list.append(e)
         self._degree += 1
-
-
-
 
 
 class Edge:

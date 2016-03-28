@@ -1,17 +1,14 @@
-import copy
-
-from experiment import graphIO as io
 from experiment.basicgraphs import *
 
 
-def initial_coloring(g: Graph) -> (Graph, dict):
-    color_dict = {}
+def initial_coloring(g: Graph):
+    g.color_dict = {}
     for v in g.vertices():
         v.colornum = v.degree()
     for v in g.vertices():
-        if v.colornum not in color_dict:
-            color_dict[v.colornum] = (v.degree(), create_nbs_dict(v))
-    return g, color_dict
+        if v.colornum not in g.color_dict:
+            g.color_dict[v.colornum] = (v.degree(), create_nbs_dict(v))
+    return
 
 
 def create_nbs_dict(v: Vertex, update: bool = False) -> {}:
@@ -33,50 +30,56 @@ def create_nbs_dict(v: Vertex, update: bool = False) -> {}:
     return nbs_dict
 
 
-def new_color(color_dict: {}):
-    c = 0
-    while c in color_dict:
-        c += 1
-    return c
+def new_color(g: Graph):
+    if hasattr(g, "color_dict"):
+        c = 0
+        while c in g.color_dict:
+            c += 1
+        return c
+    else:
+        raise GraphError("Graph has no color dictionary")
 
 
-def color_refine(g: Graph, color_dict: {}) -> Graph:
+def color_refine(g: Graph):
     # color_dict{key, value} = {colornum, (degree, nbs_dict)}
-    changed = True
-    while changed:
-        changed = False
-        for v in g.vertices():
-            nbs_dict = create_nbs_dict(v)
-            if color_dict[v.colornum][1] == nbs_dict:
-                # dont update, as the nbs are equivalent
-                pass
-            else:
-                existing_config = False
-                for c, (d, n) in color_dict.items():
-                    if d == v.degree() and n == nbs_dict:
-                        # already assigned this configuration a new color
+    if hasattr(g, "color_dict"):
+        changed = True
+        while changed:
+            changed = False
+            for v in g.vertices():
+                nbs_dict = create_nbs_dict(v)
+                if g.color_dict[v.colornum][1] == nbs_dict:
+                    # dont update, as the nbs are equivalent
+                    pass
+                else:
+                    existing_config = False
+                    for c, (d, n) in g.color_dict.items():
+                        if d == v.degree() and n == nbs_dict:
+                            # already assigned this configuration a new color
+                            v.new_colornum = c
+                            existing_config = True
+                            break
+                    if not existing_config:
+                        # This configuration is not yet known, assign a new color
+                        c = new_color(g)
                         v.new_colornum = c
-                        existing_config = True
-                        break
-                if not existing_config:
-                    # This configuration is not yet known, assign a new color
-                    c = new_color(color_dict)
-                    v.new_colornum = c
-                    color_dict[c] = (v.degree(), nbs_dict)
+                        g.color_dict[c] = (v.degree(), nbs_dict)
 
-        for v in g.vertices():
-            # update colors
-            if hasattr(v, 'new_colornum'):
-                v.colornum = v.new_colornum
-                del v.new_colornum
-                changed = True
-            # update color_dict
-            color_dict[v.colornum] = (v.degree(), create_nbs_dict(v, True))
+            for v in g.vertices():
+                # update colors
+                if hasattr(v, 'new_colornum'):
+                    v.colornum = v.new_colornum
+                    del v.new_colornum
+                    changed = True
+                # update color_dict
+                g.color_dict[v.colornum] = (v.degree(), create_nbs_dict(v, True))
 
-    return g, color_dict
+        return
+    else:
+        raise GraphError("Graph has no color dictionary")
 
 
-def isomorph_test(g: Graph, d):
+def isomorph_test(g: Graph):
     colors1 = [0] * g.number_of_vertices()
     colors2 = [0] * g.number_of_vertices()
     cmpl = g.number_of_vertices() / 2
@@ -104,24 +107,3 @@ def disjoint_union(g: Graph, h: Graph) -> Graph:
     for e in g.edges() + h.edges():
         r.add_edge(vertex_map[e.tail()], vertex_map[e.head()])
     return r
-
-
-if __name__ == '__main__':
-    graphs = io.loadgraph(filename='../graphs/colorref_smallexample_6_15.grl', readlist=True)[0]
-    number_of_graphs = len(graphs)
-    for i in range(number_of_graphs):
-        for j in range(i, number_of_graphs):
-            if i == j:
-                continue
-            g = disjoint_union(graphs[i], graphs[j])
-            colored_graph, d = initial_coloring(g)
-            color_refine(g, d)
-            r = isomorph_test(g, d)
-
-            if r is None:
-                print("Graphs %d & %d | undetermined" % (i, j))
-            elif r:
-                print("Graphs %d & %d | isomorph" % (i, j))
-            else:
-                print("Graphs %d & %d | not isomorph" % (i, j))
-    pass
