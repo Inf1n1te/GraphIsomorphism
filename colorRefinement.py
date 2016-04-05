@@ -439,11 +439,11 @@ start_time = time.clock()
 
 sys.setrecursionlimit(10000)
 
-compare("GI_TestInstancesWeek1/colorref_largeexample_6_960.grl", True)  # GI for large 4 1026
-# compare("GI_TestInstancesWeek1/products72.grl", False)  # #aut for product72
-# compare("GI_TestInstancesWeek1/torus72.grl", False)  # #aut for torus72
-# compare("GI_TestInstancesWeek1/cubes6.grl", True)  # GI for cubes6
-# compare("GI_TestInstancesWeek1/bigtrees3.grl", True)  # GI for bigtrees3
+comparepreproc("GI_TestInstancesWeek1/torus24.grl", False)  # GI for large 4 1026
+comparepreproc("GI_TestInstancesWeek1/trees90.grl", False)  # #aut for torus72
+comparepreproc("GI_TestInstancesWeek1/products72.grl", False)  # #aut for product72
+comparepreproc("GI_TestInstancesWeek1/cographs1.grl", False)  # GI for cubes6
+compare("GI_TestInstancesWeek1/bigtrees1.grl", True)  # GI for bigtrees3
 #
 # comparepreproc("GI_TestInstancesWeek1/cographs1.grl")  # GI for cographs1 with preprocessing
 # comparepreproc("GI_TestInstancesWeek1/products72.grl")  # GI for cographs1 with preprocessing
