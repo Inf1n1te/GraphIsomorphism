@@ -28,6 +28,10 @@ def main():
     print(min(Timer(t5).repeat(3, 1)))
     print(min(Timer(t6).repeat(3, 1)))
     print(min(Timer(t7).repeat(3, 1)))
+    print(min(Timer(t8).repeat(3, 1)))
+    print(min(Timer(t9).repeat(3, 1)))
+    print(min(Timer(t10).repeat(3, 1)))
+    print(min(Timer(t11).repeat(3, 1)))
 
 
 def t0():
