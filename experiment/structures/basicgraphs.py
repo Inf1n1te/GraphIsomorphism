@@ -14,8 +14,6 @@ list, and methods such as adjacency testing / finding neighbors of a vertex requ
 # Improved: 28-03-2016, Rick Fontein
 
 
-
-
 class GraphError(Exception):
     def __init__(self, message):
         self.mess = message

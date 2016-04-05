@@ -1,6 +1,6 @@
 import copy
 
-from experiment.basicgraphs import *
+from experiment.structures.basicgraphs import *
 
 
 def initial_coloring(g: Graph):
@@ -115,7 +115,6 @@ def branching(g: Graph):
                 h.color_dict[branch_color] = (bv.degree(), create_nbs_dict(bv))
                 color_refine(h)
                 return isomorph_test(h)
-    print('fuck')
 
 
 def isomorph_test(g: Graph):

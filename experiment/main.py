@@ -1,14 +1,19 @@
+import sys
 from enum import Enum
 
-from experiment import graphIO as io
 from experiment.algorithm import *
+from experiment.io import graphIO as io
 
 # graph_file = '../graphs/colorref_smallexample_6_15.grl'
-# graph_file = '../graphs/torus24.grl'
+# graph_file = '../graphs/colorref_largeexample_4_1026.grl'
+# graph_file = '../graphs/torus144.grl'
 # graph_file = '../graphs/trees90.grl'
 graph_file = '../graphs/products72.grl'
+
+
 # graph_file = '../graphs/cographs1.grl' # TODO: goes out of range, colors aren't freed or something?
-# graph_file = '../graphs/bigtrees1.grl'
+# raph_file = '../graphs/bigtrees1.grl'
+# graph_file = '../graphs/wheelstar12.grl'
 
 
 def iso_check(g: Graph, h: Graph):
@@ -36,9 +41,8 @@ def main():
     graphs = io.loadgraph(filename=graph_file, readlist=True)[0]
     isomorphisms = []
     number_of_graphs = len(graphs)
-    if number_of_graphs < 2:
-        print("Only 1 graph in graphlist.")
-    else:
+    print("Number of graphs: " + str(number_of_graphs))
+    if number_of_graphs > 1:
         if iso_check(graphs[0], graphs[1]) == Result.ISOMORHP:
             isomorphisms.append([0, 1])
         else:
@@ -47,17 +51,26 @@ def main():
 
         if number_of_graphs > 2:
             for i in range(2, number_of_graphs):
-                for j in isomorphisms:
-                    if iso_check(graphs[i], graphs[j[0]]) == Result.ISOMORHP:
-                        isomorphisms[j[0]].append(i)
+                j = 0
+                iso = False
+                while j < len(isomorphisms):
+                    iso = Result.ISOMORHP == iso_check(graphs[i], graphs[isomorphisms[j][0]])
+                    if iso:
+                        isomorphisms[j].append(i)
                         break
-                isomorphisms.append([i])
+                    j += 1
+                if not iso:
+                    isomorphisms.append([i])
 
-    # prints isomorphisms
     for i in isomorphisms:
         if len(i) > 1:
             print(i)
 
 
+def refine_only():
+    graph = graphs = io.loadgraph(filename=graph_file, readlist=True)[0][0]
+
+
 if __name__ == '__main__':
+    sys.setrecursionlimit(10000)
     main()
