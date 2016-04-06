@@ -27,16 +27,19 @@ timef2 = [ 0.04 0.09 0.13 0.3 1 3 12 ];
 p = semilogy(sizeb1, timeb1);
 p.Color = 'blue';
 p.Marker = '.';
-p.MarkerSize = 8;
+p.MarkerSize = 10;
+p.LineWidth = 1;
 
 hold on
-title('Computation Time of Basic Color Refinement for Threepaths')
-xlabel('Size \it (# vertices per path)')
-ylabel('Time \it (s)')
-xlabels = [ 5 320 640 1280 2560 5120 10240 ];
+title('Computation Time of Basic Color Refinement for Threepaths');
+xlabel('Size \it (# vertices per path)');
+ylabel('Time \it (s)');
+xlim([5 5120]);
+xlabels = [ 5 640 1280 2560 5120 10240 ];
 set(gca, 'Xtick', xlabels);
 set(gca, 'XtickLabel', xlabels);
 
+%%
 % Basic Slides w/out Adjacency
 p = semilogy(sizeb2, timeb2);
 p.Color = 'magenta';

@@ -4,6 +4,14 @@
 
 \documentclass[twoside]{article}
 
+\usepackage{graphicx}
+
+\usepackage{listings}
+\lstset{
+breaklines=true,
+tabsize=2
+}
+
 \usepackage{amsmath,amssymb,amsthm} % Mathematical Symbols, styles, etc
 
 \newtheorem{theorem}{Theorem}[section]
@@ -106,29 +114,34 @@
 %------------------------------------------------
 \section{Introduction}
 \label{intro}
-This paper will compare the time complexity of two color refinement algorithms and confirm them with computational results. The first algorithm uses the color refinement algorithm as shown by J. de Jong\cite{presentation:slidesPartI}, while the other algorithm is based on DFA minimization as shown by P. Bonsma\cite{presentation:slidesPartIII}. The algorithms have been implemented and their computation times on test sets will be used to confirm the time complexity.
+This paper will compare the time complexity of two color refinement algorithms and confirm them with computational results. The first algorithm, henceforth referred to as the basic algorithm, uses the color refinement algorithm as shown by J. de Jong\cite{presentation:slidesPartI}, while the other algorithm, henceforth referred to as the fast algorithm, is based on DFA minimization as shown by P. Bonsma\cite{presentation:slidesPartIII}. The algorithms have been implemented and their computation times on test sets will be used to confirm the time complexity.
 
 Color refinement algorithms are used in solving the graph isomorphism problem, which is the computational problem of determining whether two finite graphs are isomorphic. It is one of a very small number of problems belonging to NP neither known to be solvable in polynomial time nor NP-complete: it is one of 12 such problems listed by Garey \& Johnson (1979)\cite{book:gareyJohnson1979}, and the only one of that list whose complexity remains unresolved.\cite{website:wikiGI}
 
 %------------------------------------------------
 \section{Scope \& Objectives}
 \label{scope}
-The aim of this research paper is to calculate and compare the worst-case time complexity of both color refinement algorithms and verifying them using computational results. These results will be used to examine the differences in computation time between the algorithms for different types of graphs.
+The aim of this research paper is to calculate and compare the worst-case time complexity of both color refinement algorithms and verifying them using computational results. These results will be used to examine the differences in the growth of the computation time for a specific type of graph.
 
 This paper will describe both algorithms, give the calculations for the asymptotic worst-case time complexity, as well as an examination of the computational results.
 %------------------------------------------------
 \section{Methods}
 \label{methods}
 %% WIP %%
-The time complexity for both algorithms was calculated by hand. To verify the results, a computational experiment was performed. In this experiment, both algorithms were tested with various graphs from the test set.
+The time complexity of both algorithms was calculated by hand. To verify the results, a computational experiment was performed. In this experiment, both algorithms were tested with various sizes of a graph consisting of three paths. The paths are connected to each other on both of their ends. In the experiment the only thing changing is the length of these paths.
 
-The testing was all done on the same machine, under the same circumstances. Every test was performed at least three times in order to prevent outliers caused by external events.
+The testing was all done on the same machine, under the same circumstances. Every test was performed three times in order to prevent outliers caused by external events.
 
 \subsection{Testing}
 \label{methods:testing}
-In the experiment, both algorithms were tested with several sizes of the same type of graph, for various types of graphs. 
-% TODO Insert method of testing here
-Only the algorithms themselves were timed, initialization and other parts of the code were not included.
+In the experiment, both algorithms were tested with several sizes of the same type of graph, as described above. Each algorithm was timed three times. The lowest value of the three was selected as the most accurate, as the error margin for timing algorithms on a system is one-sided: it can only go slower than its optimal value.
+
+The python library used for timing the algorithm is \emph{timeit}. The manner in which is was used is the following:
+\begin{lstlisting}
+	min(Timer(algorithm_instance).repeat(3, 1))
+\end{lstlisting}
+
+Only the algorithms themselves and the initial coloring were timed, initialization and other parts of the code were not included.
 
 %------------------------------------------------
 \section{Algorithms}
@@ -155,7 +168,13 @@ After the first loop over the vertices in the main loop, the algorithm iterates 
 % Give and describe results
 %%
 % Table for results can be found at appendices
+The measured computation times are visualized in \autoref{fig:measurements}, the actual times can be found in \autoref{table:measurements}.
 
+\begin{figure}[H]
+	\includegraphics[width=\linewidth]{measurementsOnly}
+	\caption{The computation times of both the basic and fast color refinement algorithms for various sizes of the three paths graph.}
+	\label{fig:measurements}
+\end{figure}
 
 %------------------------------------------------
 \section{Discussion} %Change section name?
@@ -163,6 +182,18 @@ After the first loop over the vertices in the main loop, the algorithm iterates 
 %% TODO %%
 % Describe the effectiveness of the algorithms on various types of graphs, and examine the differences
 %%
+
+\begin{figure}[H]
+	\includegraphics[width=\linewidth]{measurementsOnly}
+	\caption{The relative growth of measured computation time of the basic algorithm compared to the functions $f(x)=x^2$ and $f(x)=x^3$.}
+	\label{fig:basicGrowth}
+\end{figure}
+
+\begin{figure}[H]
+	\includegraphics[width=\linewidth]{measurementsOnly}
+	\caption{The relative growth of measured computation time of the fast algorithm compared to the functions $f(x)=x^2$ and $f(x)=n\cdot log(n)$.}
+	\label{fig:fastGrowth}
+\end{figure}
 
 %------------------------------------------------
 \section{Conclusions}
@@ -201,31 +232,53 @@ After the first loop over the vertices in the main loop, the algorithm iterates 
 % All current values are fictional values for testing purposes only
 %%
 \begin{table}[h]\centering
-\label{app:tab:0}
 \begin{tabular}{|l|r@{.}l|r@{.}l|}
 \hline
 Graph	
-	& \multicolumn{2}{l|}{Algorithm A \emph{(s)}}
-	& \multicolumn{2}{l|}{Algorithm B \emph{(s)}} \\
+	& \multicolumn{2}{l|}{Basic \emph{(s)}}
+	& \multicolumn{2}{l|}{Fast \emph{(s)}} \\
 \hline
-graph\_{}type1\_{}16
-	& 0	& 001
-	& 0	& 005 \\
-graph\_{}type1\_{}64
-	& 0	& 1	
-	& 0	& 1 \\
-graph\_{}type1\_{}256
-	& 10	& 0	
-	& 2		& 0\\
-graph\_{}type1\_{}1024
-	& 1000	& 0 
-	& 40	& 0 \\
-graph\_{}type1\_{}4096
-	& 100000	& 0
-	& 800		& 0 \\
+threepaths\_{}5
+	& 0 & 00045
+	& 0	& 0 \\
+threepaths\_{}10
+	& 0 & 0017
+	& 0	& 0 \\
+threepaths\_{}20
+	& 0 & 0072
+	& 0	& 0 \\
+threepaths\_{}40
+	& 0 & 031
+	& 0	& 0 \\
+threepaths\_{}80
+	& 0 & 126
+	& 0	& 0 \\
+threepaths\_{}160
+	& 0 & 604
+	& 0	& 0 \\
+threepaths\_{}320
+	& 3 & 213
+	& 0	& 0 \\
+threepaths\_{}640
+	& 19 & 261
+	& 0	& 0 \\
+threepaths\_{}1280
+	& 127 & 567
+	& 0	& 0 \\
+threepaths\_{}2560
+	& 907 & 407
+	& 0	& 0 \\
+threepaths\_{}5120
+	& 5736 & 550
+	& 0	& 0 \\
+threepaths\_{}10240
+	& \multicolumn{2}{c|}{-}
+	& 0	& 0 \\
+
 \hline
 \end{tabular}
-\caption{This is a table}
+\caption{The measured computation times of the basic and fast color refinement algorithms for various sizes of the three paths graph.}
+\label{table:measurements}
 \end{table}
 %------------------------------------------------
 
