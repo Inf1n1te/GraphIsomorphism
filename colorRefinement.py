@@ -12,16 +12,16 @@ from makegraphs import disjointunion
 
 def fastrefine(g, colordictarg=-1, startcolor=-1, preproc=False):
     if colordictarg is -1:
-        if g.colordict == -1:
-            if not preproc:
+        # if g.colordict == -1:
+            # if not preproc:
                 colordict = degcolordict(g)
-            else:
-                colordict = preproccolordict(g)
-        else:
-            if not preproc:
-                colordict = g.colordict
-            else:
-                colordict = preproccolordict
+            # else:
+            #     colordict = preproccolordict(g)
+        # else:
+        #     if not preproc:
+        #         colordict = g.colordict
+        #     else:
+        #         colordict = preproccolordict
     else:
         colordict = colordictarg
 
@@ -431,25 +431,26 @@ def componentpreproc(graphlisturl):
             isomorphisms.append(grl.index(graph))
     print('shit finished, isomorphisms:', isomorphisms)
 
-    elapsed_time = time.clock() - start_time
-    print('Components: {0:.4f} sec'.format(elapsed_time))
+    # elapsed_time = time.clock() - start_time
+    # print('Components: {0:.4f} sec'.format(elapsed_time))
 
 
-start_time = time.clock()
+# start_time = time.clock()
 
-sys.setrecursionlimit(10000)
+# sys.setrecursionlimit(10000)
 
-comparepreproc("GI_TestInstancesWeek1/torus24.grl", False)  # GI for large 4 1026
-comparepreproc("GI_TestInstancesWeek1/trees90.grl", False)  # #aut for torus72
-comparepreproc("GI_TestInstancesWeek1/products72.grl", False)  # #aut for product72
-comparepreproc("GI_TestInstancesWeek1/cographs1.grl", False)  # GI for cubes6
-compare("GI_TestInstancesWeek1/bigtrees1.grl", True)  # GI for bigtrees3
-#
+# compare("Basic/basicGI1.grl", True)
+# compare("Basic/basicGI2.grl", True)
+# compare("Basic/basicGI3.grl", True)
+# compare("Basic/basicGIAut.grl", False)
+# compare("Basic/basicAut1.gr", False)
+# compare("Basic/basicAut2.gr", False)
+
 # comparepreproc("GI_TestInstancesWeek1/cographs1.grl")  # GI for cographs1 with preprocessing
 # comparepreproc("GI_TestInstancesWeek1/products72.grl")  # GI for cographs1 with preprocessing
 
 # componentgraphs("GI_TestInstancesWeek1/cographs1.grl")
 # componentpreproc('GI_TestInstancesWeek1/crefBM_4_16.grl')
 
-elapsed_time = time.clock() - start_time
-print('Time: {0:.4f} sec'.format(elapsed_time))
+# elapsed_time = time.clock() - start_time
+# print('Time: {0:.4f} sec'.format(elapsed_time))
