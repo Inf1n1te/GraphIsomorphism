@@ -10,7 +10,6 @@ class DoublyNode:
         is_head = self == self._dll._head
         is_tail = self == self._dll._tail
 
-
         if is_head and is_tail:
             self._dll._head = None
             self._dll._tail = None
@@ -36,7 +35,7 @@ class DoublyNode:
 
 
 class DoublyLinkedList:
-    def __init__(self, data : [] = None):
+    def __init__(self, data: [] = None):
         self._head = None
         self._tail = None
         self._len = 0
@@ -146,4 +145,3 @@ class DoublyLinkedList:
             r += str(pointer.data)
             pointer = pointer.next
         return r + "]"
-

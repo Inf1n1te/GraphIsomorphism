@@ -1,5 +1,3 @@
-import copy
-
 from experiment.structures.basicgraphs import *
 
 
@@ -79,57 +77,3 @@ def color_refine(g: Graph):
         return
     else:
         raise GraphError("Graph has no color dictionary")
-
-
-def branching(g: Graph):
-    possible = []
-    g.colors_freq = {}
-    for v in g.vertices():
-        if v.colornum in g.colors_freq:
-            g.colors_freq[v.colornum].append(v)
-
-            if len(g.colors_freq[v.colornum]) >= 4:
-                if v.colornum not in possible:
-                    possible.append(v.colornum)
-        else:
-            g.colors_freq[v.colornum] = [v]
-
-    if possible:  # empty list is false
-        for c in possible:
-            cmpl = g.number_of_vertices() / 2
-            branches = []  # label numbers of possible branches
-            branch_label = None
-            for w in g.colors_freq[c]:
-                l = w.label()
-                if l < cmpl:
-                    branches.append(l)
-                else:
-                    branch_label = l
-
-            branch_color = new_color(g)
-            for b in branches:
-                h = copy.deepcopy(g)
-                bv = h[branch_label]
-                bv.colornum = branch_color
-                h[b].colornum = branch_color
-                h.color_dict[branch_color] = (bv.degree(), create_nbs_dict(bv))
-                color_refine(h)
-                return isomorph_test(h)
-
-
-def isomorph_test(g: Graph):
-    colors0 = [0] * g.number_of_vertices()
-    colors1 = [0] * g.number_of_vertices()
-    cmpl = g.number_of_vertices() / 2
-    for i in g.vertices():
-        if i.label() < cmpl:
-            colors0[i.colornum] += 1
-        else:
-            colors1[i.colornum] += 1
-    if colors0 == colors1:
-        if max(colors0) == 1:
-            return True
-        else:
-            return branching(g)
-    else:
-        return False
