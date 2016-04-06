@@ -47,6 +47,19 @@ class DoublyLinkedList:
                 self.append(i)
         pass
 
+    def __iter__(self):
+        self._current = self._head
+        return self
+
+    def __next__(self):
+        if self._current is None:
+            self._current = self._head
+            raise StopIteration
+        else:
+            r = self._current
+            self._current = self._current.next
+            return r.data
+
     def append(self, data):
         new_node = DoublyNode(data, self)
         self._len += 1
