@@ -1,6 +1,6 @@
-%------------------------------------------------
+%----------------------------------------------------------------------------------------
 %	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
-%------------------------------------------------
+%----------------------------------------------------------------------------------------
 
 \documentclass[twoside]{article}
 
@@ -65,9 +65,9 @@ tabsize=2
 \usepackage{array}
 \newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
 
-%------------------------------------------------
+%----------------------------------------------------------------------------------------
 %	TITLE SECTION
-%------------------------------------------------
+%----------------------------------------------------------------------------------------
 
 \newcommand{\articletitle}{Comparison between Time Complexity of Different Color Refinement Algorithms in Graph Isomorphism}
 \newcommand{\shorttitle}{Color Refinement Time Complexity in Graph Isomorphism}
@@ -86,16 +86,16 @@ tabsize=2
 
 \date{\today}
 
-%------------------------------------------------
+%----------------------------------------------------------------------------------------
 
 \begin{document}
 
 \thispagestyle{empty}
 \maketitle % Insert title
 
-%------------------------------------------------
+%----------------------------------------------------------------------------------------
 %	ABSTRACT
-%------------------------------------------------
+%----------------------------------------------------------------------------------------
 
 \begin{abstract}
 
@@ -103,9 +103,9 @@ tabsize=2
 
 \end{abstract}
 
-%------------------------------------------------
+%----------------------------------------------------------------------------------------
 %	ARTICLE CONTENTS
-%------------------------------------------------
+%----------------------------------------------------------------------------------------
 
 \begin{multicols}{2} % Two-column layout throughout the main article text
 
@@ -127,6 +127,7 @@ This paper will describe both algorithms, give the calculations for the asymptot
 %------------------------------------------------
 \section{Methods}
 \label{methods}
+%% WIP %%
 The time complexity of both algorithms was calculated by hand. To verify the results, a computational experiment was performed. In this experiment, both algorithms were tested with various sizes of a graph consisting of three paths. The paths are connected to each other on both of their ends. In the experiment the only thing changing is the length of these paths.
 
 The testing was all done on the same machine, under the same circumstances. Every test was performed three times in order to prevent outliers caused by external events.
@@ -145,19 +146,19 @@ Only the algorithms themselves and the initial coloring were timed, initializati
 %------------------------------------------------
 \section{Algorithms}
 \label{algs}
-%% WIP %%
+%% TODO %%
 % Describe algorithms, show concise calculations of time complexity
 %%
 In the following subsections, we give a general overview of the algorithms and analyze them:
 The computation time of a algorithms increases for iterations over the vertices in a graph. To calculate the worst-case time complexity of the algorithms, the number and places of the iterations over the vertices are analyzed.
 
-The input and output for the algorithms are the same. The input is a graph with a possibly unstable  coloring. The output is graph with stable coloring. However, the graphs do have a different structure to support their respective algorithms refinement operation. 
+The input and output for the algorithms are the same. The input is a graph with a possibly unstable  coloring. The output is a graph with stable coloring. However, the graphs do have a different structure to support their respective algorithm's refinement operation. We do not discuss the initialisation of these structures.
 
 A coloring $\alpha$ of a graph $G$ is called stable if for all $u, v \in V(G)$ it holds that: if $\alpha(u) = \alpha(v)$, then $u$ and $v$ have identically colored neighborhoods.
  
 
 \subsection{Basic}
-The basic algorithm gives all vertices in a graph with the same color but differently colored neighborhoods a separate color. This is done iteratively until the graph has a stable coloring. The problem with this method is that all vertices are checked each iteration. 
+The basic algorithm gives all vertices in a graph with the same color but differently colored neighborhoods a separate color. This is done iteratively until the graph has a stable coloring. The determining factor of this method is that all vertices are checked each iteration. 
 
 The basic implementation has several places where iterations over vertices take place. The code contains one main loop that has a worst-case of N iterations. Thereby the time complexity so far is $O(\boldsymbol{N})$, where $N = V(G)$. In this main loop an iteration takes place over all the vertices in the graph. The time complexity is now $O(N \cdot \boldsymbol{N})$. Each vertex is checked to see if it needs an update. If so, a new color dictionary is made and a new loop over the dictionary takes place. This makes the time complexity is $O(N \cdot N \cdot \boldsymbol{N})$ for making the dictionary and $O((N \cdot N)(N+\boldsymbol{N}))$ for iterating over the dictionary. Every color class in the dictionary is checked to see if the configuration has already been assigned a new color. If the the configuration is not yet know, a new color is assigned. In worst-case this new color operation costs N. The time complexity is $O((N \cdot N)(N+N+\boldsymbol{N}))$ so far.
 
@@ -174,23 +175,12 @@ With fast color refinement the colors that lead to refinements are tracked.(TODO
 % Give and describe results
 %%
 % Table for results can be found at appendices
-The measured computation times are visualized in \autoref{fig:basiconly} and \autoref{fig:fastonly}, the actual times can be found in \autoref{table:measurements}.
-
-\subsection{Basic Algorithm}
-\autoref{fig:basiconly} shows the measure computation times of the basic color refinement algorithm for the three paths graphs of sizes 5 through 5120. The larger sizes of this graph 
+The measured computation times are visualized in \autoref{fig:measurements}, the actual times can be found in \autoref{table:measurements}.
 
 \begin{figure}[H]
-	\includegraphics[width=\linewidth]{basiconly}
-	\caption{The computation times of the basic color refinement algorithm for various sizes of the three paths graph.}
-	\label{fig:basiconly}
-\end{figure}
-
-\subsection{Fast Algorithm}
-
-\begin{figure}[H]
-	\includegraphics[width=\linewidth]{fastonly}
-	\caption{The computation times of the fast color refinement algorithm for various sizes of the three paths graph.}
-	\label{fig:fastonly}
+	\includegraphics[width=\linewidth]{measurementsOnly}
+	\caption{The computation times of both the basic and fast color refinement algorithms for various sizes of the three paths graph.}
+	\label{fig:measurements}
 \end{figure}
 
 %------------------------------------------------
@@ -200,35 +190,17 @@ The measured computation times are visualized in \autoref{fig:basiconly} and \au
 % Describe the effectiveness of the algorithms on various types of graphs, and examine the differences
 %%
 
-\subsection{Basic Algorithm}
-
 \begin{figure}[H]
-	\includegraphics[width=\linewidth]{basicfunctions}
-	\caption{The computation times of the basic color refinement algorithm and the functions $f(n)=n^2$ and $f(n)=n^3$.}
-	\label{fig:basicfunctions}
+	\includegraphics[width=\linewidth]{measurementsOnly}
+	\caption{The relative growth of measured computation time of the basic algorithm compared to the functions $f(x)=x^2$ and $f(x)=x^3$.}
+	\label{fig:basicGrowth}
 \end{figure}
 
 \begin{figure}[H]
-	\includegraphics[width=\linewidth]{basicdiff}
-	\caption{The relative growth of measured computation time of the basic algorithm compared to the functions $f(n)=n^2$ and $f(n)=n^3$.}
-	\label{fig:basicgrowth}
+	\includegraphics[width=\linewidth]{measurementsOnly}
+	\caption{The relative growth of measured computation time of the fast algorithm compared to the functions $f(x)=x^2$ and $f(x)=n\cdot log(n)$.}
+	\label{fig:fastGrowth}
 \end{figure}
-
-\subsection{Fast Algorithm}
-
-\begin{figure}[H]
-	\includegraphics[width=\linewidth]{fastfunctions}
-	\caption{The computation times of the fast color refinement algorithm and the functions $f(x)=n\cdot log(n)$ and $f(x)=n$.}
-	\label{fig:fastgrowth}
-\end{figure}
-
-\begin{figure}[H]
-	\includegraphics[width=\linewidth]{fastdiff}
-	\caption{The relative growth of measured computation time of the fast algorithm compared to the functions $f(x)=n\cdot log(n)$ and $f(x)=n$.}
-	\label{fig:fastfunctions}
-\end{figure}
-
-\subsection{Comparison}
 
 %------------------------------------------------
 \section{Conclusions}
@@ -237,16 +209,16 @@ The measured computation times are visualized in \autoref{fig:basiconly} and \au
 % Draw conlusions from both the results and discussion
 %%
 
-%------------------------------------------------
+%----------------------------------------------------------------------------------------
 %	REFERENCE LIST
-%------------------------------------------------
+%----------------------------------------------------------------------------------------
 \label{references}
 \printbibliography
 %bibliography{references}
 
-%------------------------------------------------
+%----------------------------------------------------------------------------------------
 %	APPENDICES
-%------------------------------------------------
+%----------------------------------------------------------------------------------------
 %% TODO %%
 % Put all the things that should be in the paper, but don't fit the main part here
 %%
@@ -275,43 +247,40 @@ Graph
 \hline
 threepaths\_{}5
 	& 0 & 00045
-	& 0	& 00059 \\
+	& 0	& 0 \\
 threepaths\_{}10
 	& 0 & 0017
-	& 0	& 00086 \\
+	& 0	& 0 \\
 threepaths\_{}20
 	& 0 & 0072
-	& 0	& 0018 \\
+	& 0	& 0 \\
 threepaths\_{}40
 	& 0 & 031
-	& 0	& 0044 \\
+	& 0	& 0 \\
 threepaths\_{}80
 	& 0 & 126
-	& 0	& 0071 \\
+	& 0	& 0 \\
 threepaths\_{}160
 	& 0 & 604
-	& 0	& 014 \\
+	& 0	& 0 \\
 threepaths\_{}320
 	& 3 & 213
-	& 0	& 029 \\
+	& 0	& 0 \\
 threepaths\_{}640
 	& 19 & 261
-	& 0	& 058 \\
+	& 0	& 0 \\
 threepaths\_{}1280
 	& 127 & 567
-	& 0	& 117 \\
+	& 0	& 0 \\
 threepaths\_{}2560
 	& 907 & 407
-	& 0	& 261 \\
+	& 0	& 0 \\
 threepaths\_{}5120
 	& 5736 & 550
-	& 0	& 491 \\
+	& 0	& 0 \\
 threepaths\_{}10240
 	& \multicolumn{2}{c|}{-}
-	& 0	& 994 \\
-threepaths\_{}10240
-	& \multicolumn{2}{c|}{-}
-	& 2	& 089 \\
+	& 0	& 0 \\
 
 \hline
 \end{tabular}
@@ -321,6 +290,6 @@ threepaths\_{}10240
 %------------------------------------------------
 
 \end{appendices}
-%------------------------------------------------
+%----------------------------------------------------------------------------------------
 
 \end{document}
