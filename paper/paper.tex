@@ -236,6 +236,15 @@ As the calculated worst-case time complexity of the fast color refinement algori
 %------------------------------------------------
 \section{Conclusions}
 \label{concl}
+The most obvious conclusion we draw from the worst-case complexity and computational results is that fast refinement is a faster algorithm than basic refinement. However, when we compare the computational results with their calculated worst-case complexity we observe some differences.
+
+The complexity of basic refinement we determined is $O(N^3)$. When we look at the relative growth, it seems that the algorithm approaches $O(N^2)$. There could be two causes:
+\begin{compactitem}
+	\item The determined complexity of $O(N^3)$ was faulty.
+	\item The type of graphs used, threegraphs, aproach a $O(N^2)$ complexity because of their structure. $O(N^3)$ was determined as worst-case.
+\end{compactitem}
+
+The complexity of fast refinement we determined is $O(MlogN)$. When we look at the relative growth, it seems that the algorithm approaches a linear complexity. We attribute this to the structure of the type of graphs used, threegraphs. $O(MlogN)$ was determined as worst-case.
 %% TODO %%
 % Draw conlusions from both the results and discussion
 %%
