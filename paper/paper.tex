@@ -1,6 +1,6 @@
-%----------------------------------------------------------------------------------------
+%------------------------------------------------
 %	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
-%----------------------------------------------------------------------------------------
+%------------------------------------------------
 
 \documentclass[twoside]{article}
 
@@ -65,9 +65,9 @@ tabsize=2
 \usepackage{array}
 \newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
 
-%----------------------------------------------------------------------------------------
+%------------------------------------------------
 %	TITLE SECTION
-%----------------------------------------------------------------------------------------
+%------------------------------------------------
 
 \newcommand{\articletitle}{Comparison between Time Complexity of Different Color Refinement Algorithms in Graph Isomorphism}
 \newcommand{\shorttitle}{Color Refinement Time Complexity in Graph Isomorphism}
@@ -86,16 +86,16 @@ tabsize=2
 
 \date{\today}
 
-%----------------------------------------------------------------------------------------
+%------------------------------------------------
 
 \begin{document}
 
 \thispagestyle{empty}
 \maketitle % Insert title
 
-%----------------------------------------------------------------------------------------
+%------------------------------------------------
 %	ABSTRACT
-%----------------------------------------------------------------------------------------
+%------------------------------------------------
 
 \begin{abstract}
 
@@ -103,9 +103,9 @@ tabsize=2
 
 \end{abstract}
 
-%----------------------------------------------------------------------------------------
+%------------------------------------------------
 %	ARTICLE CONTENTS
-%----------------------------------------------------------------------------------------
+%------------------------------------------------
 
 \begin{multicols}{2} % Two-column layout throughout the main article text
 
@@ -170,7 +170,7 @@ After the first loop over the vertices in the main loop, the algorithm iterates 
 The measured computation times are visualized in \autoref{fig:basiconly} and \autoref{fig:fastonly}, the actual times can be found in \autoref{table:measurements}.
 
 \subsection{Basic Algorithm}
-
+\autoref{fig:basiconly} shows the measure computation times of the basic color refinement algorithm for the three paths graphs of sizes 5 through 5120. The larger sizes of this graph 
 
 \begin{figure}[H]
 	\includegraphics[width=\linewidth]{basiconly}
@@ -230,16 +230,16 @@ The measured computation times are visualized in \autoref{fig:basiconly} and \au
 % Draw conlusions from both the results and discussion
 %%
 
-%----------------------------------------------------------------------------------------
+%------------------------------------------------
 %	REFERENCE LIST
-%----------------------------------------------------------------------------------------
+%------------------------------------------------
 \label{references}
 \printbibliography
 %bibliography{references}
 
-%----------------------------------------------------------------------------------------
+%------------------------------------------------
 %	APPENDICES
-%----------------------------------------------------------------------------------------
+%------------------------------------------------
 %% TODO %%
 % Put all the things that should be in the paper, but don't fit the main part here
 %%
@@ -314,6 +314,6 @@ threepaths\_{}10240
 %------------------------------------------------
 
 \end{appendices}
-%----------------------------------------------------------------------------------------
+%------------------------------------------------
 
 \end{document}
