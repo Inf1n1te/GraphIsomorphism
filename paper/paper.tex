@@ -201,9 +201,10 @@ The measured computation times are visualized in \autoref{fig:basiconly} and \au
 %% WIP %%
 % Describe the effectiveness of the algorithms on various types of graphs, and examine the differences
 %%
-To verify the results 
+To verify the results of the time complexity calculations, the measurements have to be compared to functions of the expected time complexity. To more clearly see the relation between the two, diagrams with the relative size of the two were created.
 
 \subsection{Basic Algorithm}
+As the calculated worst-case time complexity of the basic color refinement algorithm is $O(N^3)$, \autoref{fig:basicfunctions} shows the measurements and the function $f(n)=x^3$. \autoref{fig:basicgrowth} then plots the relative size of the two of on a logarithmic scale. It shows that $f(n)=x^3$ grows significantly faster than the measurements. Looking for a better fit, $f(n)=n^2$ was added to both diagrams. \autoref{fig:fastgrowth} indicates 
 
 \begin{figure}[H]
 	\includegraphics[width=\linewidth]{basicfunctions}
@@ -222,13 +223,13 @@ To verify the results
 \begin{figure}[H]
 	\includegraphics[width=\linewidth]{fastfunctions}
 	\caption{The computation times of the fast color refinement algorithm and the functions $f(x)=n\cdot log(n)$ and $f(x)=n$.}
-	\label{fig:fastgrowth}
+	\label{fig:fastfunctions}
 \end{figure}
 
 \begin{figure}[H]
 	\includegraphics[width=\linewidth]{fastdiff}
 	\caption{The relative growth of measured computation time of the fast algorithm compared to the functions $f(x)=n\cdot log(n)$ and $f(x)=n$.}
-	\label{fig:fastfunctions}
+	\label{fig:fastgrowth}
 \end{figure}
 
 \subsection{Comparison}
