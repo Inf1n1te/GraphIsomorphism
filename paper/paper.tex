@@ -1,6 +1,6 @@
-%----------------------------------------------------------------------------------------
+%------------------------------------------------
 %	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
-%----------------------------------------------------------------------------------------
+%------------------------------------------------
 
 \documentclass[twoside]{article}
 
@@ -65,9 +65,9 @@ tabsize=2
 \usepackage{array}
 \newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
 
-%----------------------------------------------------------------------------------------
+%------------------------------------------------
 %	TITLE SECTION
-%----------------------------------------------------------------------------------------
+%------------------------------------------------
 
 \newcommand{\articletitle}{Comparison between Time Complexity of Different Color Refinement Algorithms in Graph Isomorphism}
 \newcommand{\shorttitle}{Color Refinement Time Complexity in Graph Isomorphism}
@@ -86,16 +86,16 @@ tabsize=2
 
 \date{\today}
 
-%----------------------------------------------------------------------------------------
+%------------------------------------------------
 
 \begin{document}
 
 \thispagestyle{empty}
 \maketitle % Insert title
 
-%----------------------------------------------------------------------------------------
+%------------------------------------------------
 %	ABSTRACT
-%----------------------------------------------------------------------------------------
+%------------------------------------------------
 
 \begin{abstract}
 
@@ -103,9 +103,9 @@ tabsize=2
 
 \end{abstract}
 
-%----------------------------------------------------------------------------------------
+%------------------------------------------------
 %	ARTICLE CONTENTS
-%----------------------------------------------------------------------------------------
+%------------------------------------------------
 
 \begin{multicols}{2} % Two-column layout throughout the main article text
 
@@ -127,7 +127,6 @@ This paper will describe both algorithms, give the calculations for the asymptot
 %------------------------------------------------
 \section{Methods}
 \label{methods}
-%% WIP %%
 The time complexity of both algorithms was calculated by hand. To verify the results, a computational experiment was performed. In this experiment, both algorithms were tested with various sizes of a graph consisting of three paths. The paths are connected to each other on both of their ends. In the experiment the only thing changing is the length of these paths.
 
 The testing was all done on the same machine, under the same circumstances. Every test was performed three times in order to prevent outliers caused by external events.
@@ -164,6 +163,7 @@ The basic implementation has several places where iterations over vertices take 
 
 After the first loop over the vertices in the main loop, the algorithm iterates over all the vertices to color all the vertices correctly in the main dictionary. The time complexity worst-case at the end is $O((N \cdot (N+\boldsymbol{N})(N+N+N)) = O(N^3)$.
 
+
 \subsection{Fast}
 With fast color refinement the colors that lead to refinements are tracked.(TODO: make better explanation) These colors are maintained in a queue. If a color class is being refined, the class is split into two different classes, with one class keeping the old color. The algorithm terminates with a stable coloring if no color class needs refinement, in other words the queue is empty. 
 %% TODO %%
@@ -190,9 +190,9 @@ The measured computation times are visualized in \autoref{fig:basiconly} and \au
 \autoref{fig:fastonly} shows the measured computation times of the fast color refinement algorithm for the three paths graphs of sizes 5 through 20480. Larger variants of the graph were not available and therefore not used.
 
 \begin{figure}[H]
-	\includegraphics[width=\linewidth]{measurementsOnly}
-	\caption{The computation times of both the basic and fast color refinement algorithms for various sizes of the three paths graph.}
-	\label{fig:measurements}
+	\includegraphics[width=\linewidth]{fastonly}
+	\caption{The computation times of the fast color refinement algorithm for various sizes of the three paths graph.}
+	\label{fig:fastonly}
 \end{figure}
 
 %------------------------------------------------
@@ -203,17 +203,35 @@ The measured computation times are visualized in \autoref{fig:basiconly} and \au
 %%
 To verify the results 
 
+\subsection{Basic Algorithm}
+
 \begin{figure}[H]
-	\includegraphics[width=\linewidth]{measurementsOnly}
-	\caption{The relative growth of measured computation time of the basic algorithm compared to the functions $f(x)=x^2$ and $f(x)=x^3$.}
-	\label{fig:basicGrowth}
+	\includegraphics[width=\linewidth]{basicfunctions}
+	\caption{The computation times of the basic color refinement algorithm and the functions $f(n)=n^2$ and $f(n)=n^3$.}
+	\label{fig:basicfunctions}
 \end{figure}
 
 \begin{figure}[H]
-	\includegraphics[width=\linewidth]{measurementsOnly}
-	\caption{The relative growth of measured computation time of the fast algorithm compared to the functions $f(x)=x^2$ and $f(x)=n\cdot log(n)$.}
-	\label{fig:fastGrowth}
+	\includegraphics[width=\linewidth]{basicdiff}
+	\caption{The relative growth of measured computation time of the basic algorithm compared to the functions $f(n)=n^2$ and $f(n)=n^3$.}
+	\label{fig:basicgrowth}
 \end{figure}
+
+\subsection{Fast Algorithm}
+
+\begin{figure}[H]
+	\includegraphics[width=\linewidth]{fastfunctions}
+	\caption{The computation times of the fast color refinement algorithm and the functions $f(x)=n\cdot log(n)$ and $f(x)=n$.}
+	\label{fig:fastgrowth}
+\end{figure}
+
+\begin{figure}[H]
+	\includegraphics[width=\linewidth]{fastdiff}
+	\caption{The relative growth of measured computation time of the fast algorithm compared to the functions $f(x)=n\cdot log(n)$ and $f(x)=n$.}
+	\label{fig:fastfunctions}
+\end{figure}
+
+\subsection{Comparison}
 
 %------------------------------------------------
 \section{Conclusions}
@@ -222,16 +240,16 @@ To verify the results
 % Draw conlusions from both the results and discussion
 %%
 
-%----------------------------------------------------------------------------------------
+%------------------------------------------------
 %	REFERENCE LIST
-%----------------------------------------------------------------------------------------
+%------------------------------------------------
 \label{references}
 \printbibliography
 %bibliography{references}
 
-%----------------------------------------------------------------------------------------
+%------------------------------------------------
 %	APPENDICES
-%----------------------------------------------------------------------------------------
+%------------------------------------------------
 %% TODO %%
 % Put all the things that should be in the paper, but don't fit the main part here
 %%
@@ -260,40 +278,43 @@ Graph
 \hline
 threepaths\_{}5
 	& 0 & 00045
-	& 0	& 0 \\
+	& 0	& 00059 \\
 threepaths\_{}10
 	& 0 & 0017
-	& 0	& 0 \\
+	& 0	& 00086 \\
 threepaths\_{}20
 	& 0 & 0072
-	& 0	& 0 \\
+	& 0	& 0018 \\
 threepaths\_{}40
 	& 0 & 031
-	& 0	& 0 \\
+	& 0	& 0044 \\
 threepaths\_{}80
 	& 0 & 126
-	& 0	& 0 \\
+	& 0	& 0071 \\
 threepaths\_{}160
 	& 0 & 604
-	& 0	& 0 \\
+	& 0	& 014 \\
 threepaths\_{}320
 	& 3 & 213
-	& 0	& 0 \\
+	& 0	& 029 \\
 threepaths\_{}640
 	& 19 & 261
-	& 0	& 0 \\
+	& 0	& 058 \\
 threepaths\_{}1280
 	& 127 & 567
-	& 0	& 0 \\
+	& 0	& 117 \\
 threepaths\_{}2560
 	& 907 & 407
-	& 0	& 0 \\
+	& 0	& 261 \\
 threepaths\_{}5120
 	& 5736 & 550
-	& 0	& 0 \\
+	& 0	& 491 \\
 threepaths\_{}10240
 	& \multicolumn{2}{c|}{-}
-	& 0	& 0 \\
+	& 0	& 994 \\
+threepaths\_{}10240
+	& \multicolumn{2}{c|}{-}
+	& 2	& 089 \\
 
 \hline
 \end{tabular}
@@ -303,6 +324,6 @@ threepaths\_{}10240
 %------------------------------------------------
 
 \end{appendices}
-%----------------------------------------------------------------------------------------
+%------------------------------------------------
 
 \end{document}
