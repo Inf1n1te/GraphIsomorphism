@@ -127,7 +127,6 @@ This paper will describe both algorithms, give the calculations for the asymptot
 %------------------------------------------------
 \section{Methods}
 \label{methods}
-%% WIP %%
 The time complexity of both algorithms was calculated by hand. To verify the results, a computational experiment was performed. In this experiment, both algorithms were tested with various sizes of a graph consisting of three paths. The paths are connected to each other on both of their ends. In the experiment the only thing changing is the length of these paths.
 
 The testing was all done on the same machine, under the same circumstances. Every test was performed three times in order to prevent outliers caused by external events.
@@ -146,7 +145,7 @@ Only the algorithms themselves and the initial coloring were timed, initializati
 %------------------------------------------------
 \section{Algorithms}
 \label{algs}
-%% TODO %%
+%% WIP %%
 % Describe algorithms, show concise calculations of time complexity
 %%
 For the paper, two different color refinement methods were implemented. The basic one gives all vertices in a graph with the same color but differently colored neighborhoods a separate color. This is done iteratively until the graph is stably colored. A coloring $\alpha$ of $G$ is stable if for all $u, v \in V(G)$ it holds that: if $\alpha(u) = \alpha(v)$, then $u$ and $v$ have identically colored neighborhoods. The problem with this method is that all vertices are checked each iteration. 
@@ -168,12 +167,18 @@ After the first loop over the vertices in the main loop, the algorithm iterates 
 % Give and describe results
 %%
 % Table for results can be found at appendices
-The measured computation times are visualized in \autoref{fig:measurements}, the actual times can be found in \autoref{table:measurements}.
+The measured computation times are visualized in \autoref{fig:basiconly} and \autoref{fig:fastonly}, the actual times can be found in \autoref{table:measurements}.
 
 \begin{figure}[H]
-	\includegraphics[width=\linewidth]{measurementsOnly}
-	\caption{The computation times of both the basic and fast color refinement algorithms for various sizes of the three paths graph.}
-	\label{fig:measurements}
+	\includegraphics[width=\linewidth]{basiconly}
+	\caption{The computation times of the basic color refinement algorithm for various sizes of the three paths graph.}
+	\label{fig:basiconly}
+\end{figure}
+
+\begin{figure}[H]
+	\includegraphics[width=\linewidth]{fastonly}
+	\caption{The computation times of the fast color refinement algorithm for various sizes of the three paths graph.}
+	\label{fig:fastonly}
 \end{figure}
 
 %------------------------------------------------
@@ -184,15 +189,27 @@ The measured computation times are visualized in \autoref{fig:measurements}, the
 %%
 
 \begin{figure}[H]
-	\includegraphics[width=\linewidth]{measurementsOnly}
-	\caption{The relative growth of measured computation time of the basic algorithm compared to the functions $f(x)=x^2$ and $f(x)=x^3$.}
-	\label{fig:basicGrowth}
+	\includegraphics[width=\linewidth]{basicfunctions}
+	\caption{The computation times of the basic color refinement algorithm and the functions $f(n)=n^2$ and $f(n)=n^3$.}
+	\label{fig:basicfunctions}
 \end{figure}
 
 \begin{figure}[H]
-	\includegraphics[width=\linewidth]{measurementsOnly}
-	\caption{The relative growth of measured computation time of the fast algorithm compared to the functions $f(x)=x^2$ and $f(x)=n\cdot log(n)$.}
-	\label{fig:fastGrowth}
+	\includegraphics[width=\linewidth]{basicdiff}
+	\caption{The relative growth of measured computation time of the basic algorithm compared to the functions $f(n)=n^2$ and $f(n)=n^3$.}
+	\label{fig:basicgrowth}
+\end{figure}
+
+\begin{figure}[H]
+	\includegraphics[width=\linewidth]{fastfunctions}
+	\caption{The computation times of the fast color refinement algorithm and the functions $f(x)=n\cdot log(n)$ and $f(x)=n$.}
+	\label{fig:fastgrowth}
+\end{figure}
+
+\begin{figure}[H]
+	\includegraphics[width=\linewidth]{fastdiff}
+	\caption{The relative growth of measured computation time of the fast algorithm compared to the functions $f(x)=n\cdot log(n)$ and $f(x)=n$.}
+	\label{fig:fastfunctions}
 \end{figure}
 
 %------------------------------------------------
@@ -240,40 +257,43 @@ Graph
 \hline
 threepaths\_{}5
 	& 0 & 00045
-	& 0	& 0 \\
+	& 0	& 00059 \\
 threepaths\_{}10
 	& 0 & 0017
-	& 0	& 0 \\
+	& 0	& 00086 \\
 threepaths\_{}20
 	& 0 & 0072
-	& 0	& 0 \\
+	& 0	& 0018 \\
 threepaths\_{}40
 	& 0 & 031
-	& 0	& 0 \\
+	& 0	& 0044 \\
 threepaths\_{}80
 	& 0 & 126
-	& 0	& 0 \\
+	& 0	& 0071 \\
 threepaths\_{}160
 	& 0 & 604
-	& 0	& 0 \\
+	& 0	& 014 \\
 threepaths\_{}320
 	& 3 & 213
-	& 0	& 0 \\
+	& 0	& 029 \\
 threepaths\_{}640
 	& 19 & 261
-	& 0	& 0 \\
+	& 0	& 058 \\
 threepaths\_{}1280
 	& 127 & 567
-	& 0	& 0 \\
+	& 0	& 117 \\
 threepaths\_{}2560
 	& 907 & 407
-	& 0	& 0 \\
+	& 0	& 261 \\
 threepaths\_{}5120
 	& 5736 & 550
-	& 0	& 0 \\
+	& 0	& 491 \\
 threepaths\_{}10240
 	& \multicolumn{2}{c|}{-}
-	& 0	& 0 \\
+	& 0	& 994 \\
+threepaths\_{}10240
+	& \multicolumn{2}{c|}{-}
+	& 2	& 089 \\
 
 \hline
 \end{tabular}

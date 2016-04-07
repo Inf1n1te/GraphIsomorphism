@@ -78,9 +78,9 @@ xlabels = [ 5 2560 5120 10240  20480];
 set(gca, 'Xtick', xlabels);
 set(gca, 'XtickLabel', xlabels);
 
-% log2n
+% n
 x = 0:5:20480;
-p = semilogy(x, log2(x));
+p = semilogy(x, x);
 p.Color = 'black';
 
 % nlog2n
@@ -88,7 +88,7 @@ x = 0:5:20480;
 p = semilogy(x, x.*log2(x));
 p.Color = 'red';
 
-legend('color refinement', 'log_2n', 'n\cdotlog_2n');
+legend('color refinement', 'n', 'n\cdotlog_2n');
 legend('Location','southeast');
 legend('boxon');
 
@@ -127,18 +127,19 @@ legend('Measurements', 'Slides w/out adjacency', 'Slides w/ adjacency', 'Fast sl
 
 %% Relative Growth Basic Subplot
 m2 = sizeb1.^2;
-diff2 = m2./timeb1;
+diff2 = m2-timeb1;
 m3 = sizeb1.^3;
 diff3 = m3./timeb1;
-diff = [ diff3.' diff2.' ];
+%diff = [ diff3.' diff2.' ];
+diff = diff2.';
 
 %subplot(2,1,2);
 figure
 
 bar_handle = bar(diff, 'grouped');
-set(gca, 'YScale', 'log');
+set(gca, 'YScale', 'linear');
 set(bar_handle(1), 'FaceColor', 'red')
-set(bar_handle(2), 'FaceColor', 'black')
+%set(bar_handle(2), 'FaceColor', 'black')
 
 set(gca, 'XtickLabel', sizeb1);
 
@@ -160,7 +161,7 @@ diff6 = m6./timef1;
 m7 = sizef1.^2.*log2(sizef1);
 diff7 = m7./timef1;
 m8 = log(sizef1);
-diff8 = m8./timef1;
+diff8 = sizef1./timef1;
 diff = [ diff4.' diff8.'];
 
 %subplot(2,1,2);
@@ -184,6 +185,6 @@ title('Relative Differences between Fast Algorithm and Functions')
 xlabel('Size \it (# vertices per path)')
 ylabel('Function divided by computation time')
 
-legend('n\cdotlog_2n', 'log_2n');
+legend('n\cdotlog_2n', 'n');
 legend('Location','northwest');
 legend('boxon');
