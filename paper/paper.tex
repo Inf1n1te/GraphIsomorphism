@@ -169,11 +169,16 @@ After the first loop over the vertices in the main loop, the algorithm iterates 
 % Table for results can be found at appendices
 The measured computation times are visualized in \autoref{fig:basiconly} and \autoref{fig:fastonly}, the actual times can be found in \autoref{table:measurements}.
 
+\subsection{Basic Algorithm}
+
+
 \begin{figure}[H]
 	\includegraphics[width=\linewidth]{basiconly}
 	\caption{The computation times of the basic color refinement algorithm for various sizes of the three paths graph.}
 	\label{fig:basiconly}
 \end{figure}
+
+\subsection{Fast Algorithm}
 
 \begin{figure}[H]
 	\includegraphics[width=\linewidth]{fastonly}
@@ -188,6 +193,8 @@ The measured computation times are visualized in \autoref{fig:basiconly} and \au
 % Describe the effectiveness of the algorithms on various types of graphs, and examine the differences
 %%
 
+\subsection{Basic Algorithm}
+
 \begin{figure}[H]
 	\includegraphics[width=\linewidth]{basicfunctions}
 	\caption{The computation times of the basic color refinement algorithm and the functions $f(n)=n^2$ and $f(n)=n^3$.}
@@ -200,6 +207,8 @@ The measured computation times are visualized in \autoref{fig:basiconly} and \au
 	\label{fig:basicgrowth}
 \end{figure}
 
+\subsection{Fast Algorithm}
+
 \begin{figure}[H]
 	\includegraphics[width=\linewidth]{fastfunctions}
 	\caption{The computation times of the fast color refinement algorithm and the functions $f(x)=n\cdot log(n)$ and $f(x)=n$.}
@@ -211,6 +220,8 @@ The measured computation times are visualized in \autoref{fig:basiconly} and \au
 	\caption{The relative growth of measured computation time of the fast algorithm compared to the functions $f(x)=n\cdot log(n)$ and $f(x)=n$.}
 	\label{fig:fastfunctions}
 \end{figure}
+
+\subsection{Comparison}
 
 %------------------------------------------------
 \section{Conclusions}
