@@ -6,7 +6,8 @@
 
 \usepackage{graphicx}
 
-\usepackage{algorithmicx}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
 
 \usepackage{listings}
 \lstset{
@@ -53,7 +54,7 @@ tabsize=2
 \pagestyle{fancy} % All pages have headers and footers
 \fancyhead{} % Blank out the default header
 \fancyfoot{} % Blank out the default footer
-\fancyhead[C]{W.G. Puttenstein, R.L.H. Fontein, H.D. van Wieren, T. Kerkhoven: \shorttitle} % Custom header text
+\fancyhead[C]{R.L.H. Fontein, H.D. van Wieren, T. Kerkhoven: \shorttitle} % Custom header text
 \fancyfoot[RO,LE]{\thepage} % Custom footer text
 
 % Bibliography
@@ -78,12 +79,11 @@ tabsize=2
 
 \author{
 \large
-\textsc{Gerwin Puttenstein, Rick Fontein, Huub van Wieren, and Tim Kerkhoven}\\[2mm] % Your name
+\textsc{Rick Fontein, Huub van Wieren, and Tim Kerkhoven}\\[2mm] % Your name
 \normalsize University of Twente \\ % Your institution
-\normalsize \href{mailto:w.g.puttenstein@student.utwente.nl}{w.g.puttenstein@student.utwente.nl}, 
-\href{mailto:r.l.h.fontein@student.utwente.nl}{r.l.h.fontein@student.utwente.nl},\\
-\normalsize \href{mailto:h.d.vanwieren@student.utwente.nl}{h.d.vanwieren@student.utwente.nl},
-\href{mailto:t.kerkhoven@student.utwente.nl}{t.kerkhoven@student.utwente.nl}% Your email addresses
+\normalsize \href{mailto:r.l.h.fontein@student.utwente.nl}{r.l.h.fontein@student.utwente.nl},
+\href{mailto:h.d.vanwieren@student.utwente.nl}{h.d.vanwieren@student.utwente.nl},\\
+\normalsize \href{mailto:t.kerkhoven@student.utwente.nl}{t.kerkhoven@student.utwente.nl}% Your email addresses
 }
 
 \date{\today}
@@ -240,7 +240,33 @@ The determined time complexity of the fast algorithm is $O(MlogN)$. When looking
 %------------------------------------------------
 \section{Algorithms}
 \label{app:algs}
-
+\begin{algorithm}
+    \begin{algorithmic}[1] % The number tells where the line numbering should start
+        \Procedure{BasicColorRefinement}{$G$}
+            \While{not stable} \Comment{Worst case loop over every vertex}
+            	 \For{every vertex $v \in G(V)$}
+            	 	\State calculate neighborhood $nbs$ of $v$
+            	  	\If {$nbs$ of $v$ has not changed}
+    \State pass
+    				\Else
+    					\For{every item in the dictionary}
+    						\State checks if the configuration is not yet known.
+    					\EndFor
+    					\If{the configuration is not yet known}
+    						\State assign a new color \
+    					\EndIf
+    				\EndIf
+            	  \EndFor
+				\For{every vertex in G}
+					\State update neighborhood dictionary
+				\EndFor
+            \EndWhile\label{euclidendwhile}
+            \State \textbf{return} stable colored graph
+        \EndProcedure
+    \end{algorithmic}
+    \caption{Basic color refinement}
+    \label{euclid}
+\end{algorithm}
 
 %------------------------------------------------
 \section{Figures}
@@ -284,7 +310,7 @@ The determined time complexity of the fast algorithm is $O(MlogN)$. When looking
 \end{multicols}
 
 %------------------------------------------------
-\newpage
+% \newpage
 \section{Tables} %Change section name
 \label{app:tabs}
 \begin{table}[h]\centering
