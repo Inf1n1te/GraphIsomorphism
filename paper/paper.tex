@@ -162,7 +162,7 @@ A coloring $\alpha$ of a graph $G$ is called stable if for all $u, v \in V(G)$ i
  
 
 \subsection{Basic}
-The basic algorithm gives all vertices in a graph with the same color but differently colored neighborhoods a separate color. This is done iteratively until the graph has a stable coloring. The determining factor of this method is that all vertices are checked each iteration. 
+The basic algorithm (Algorithm \autoref{alg:basic}) gives all vertices in a graph with the same color but differently colored neighborhoods a separate color. This is done iteratively until the graph has a stable coloring. The determining factor of this method is that all vertices are checked each iteration. 
 
 The basic implementation has several places where iterations over vertices take place. The code contains one main loop that has a worst-case of N iterations. Thereby the time complexity so far is $O(\boldsymbol{N})$, where $N = V(G)$. In this main loop an iteration takes place over all the vertices in the graph. The time complexity is now $O(N \cdot \boldsymbol{N})$. Each vertex is checked to see if it needs an update. If so, a new color dictionary is made and a new loop over the dictionary takes place. This makes the time complexity is $O(N \cdot N \cdot \boldsymbol{N})$ for making the dictionary and $O((N \cdot N)(N+\boldsymbol{N}))$ for iterating over the dictionary. Every color class in the dictionary is checked to see if the configuration has already been assigned a new color. If the the configuration is not yet know, a new color is assigned. In worst-case this new color operation costs N. The time complexity is $O((N \cdot N)(N+N+\boldsymbol{N}))$ so far.
 
@@ -170,7 +170,7 @@ After the first loop over the vertices in the main loop, the algorithm iterates 
 
 
 \subsection{Fast}
-With fast color refinement the colorsclasses that could be used to refinement other color classes are tracked by putting them in a queue. If a color class is being refined, the class is split into two different classes, with one class keeping the old color. The algorithm terminates with a stable coloring if no color class needs refinement, in other words the queue is empty. 
+With fast color refinement (Algorithm \autoref{alg:fast}) the colorsclasses that could be used to refinement other color classes are tracked by putting them in a queue. If a color class is being refined, the class is split into two different classes, with one class keeping the old color. The algorithm terminates with a stable coloring if no color class needs refinement, in other words the queue is empty. 
 
 Fast color refinement is also analyzed. $N$ is again defined as $N=|V(G)|$. Determined is the number of times a vertex $v$ is refined in its worst-case. The color class of $v$ splits at least in half if it is getting refined. The split class with the most vertices in it keeps the original color. If vertex $v$ stays in this original class, $v$ is not refined by definition. It follows that if $v$ gets refined, the degree of the previous color class is at most two times the degree of its new class. Let $k$ be the times $v$ is refined in the algorithm, then $2^k$ is the degree of $v$'s original color class.  The degree of the color class is worst-case $N$ if all vertices have the same amount of edges, so worst-case $k=log_2 N$. As shown by P. Bonsma in one of his lectures. \cite{presentation:slidesPartIII}
 
