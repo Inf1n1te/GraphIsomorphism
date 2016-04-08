@@ -123,7 +123,7 @@ Color refinement algorithms are used in solving the graph isomorphism problem, w
 %------------------------------------------------
 \section{Scope \& Objectives}
 \label{scope}
-The aim of this research paper is to calculate and compare the worst-case time complexity of both color refinement algorithms and verifying them using computational results. These results will be used to examine the differences in the growth of the computation time for a specific type of graph.
+The aim of this research paper is to calculate and compare the worst-case asymptotic time complexity of both color refinement algorithms and verifying them using computational results. These results will be used to examine the differences in the growth of the computation time for a specific type of graph.
 
 This paper will describe both algorithms, give the calculations for the asymptotic worst-case time complexity, as well as an examination of the computational results.
 %------------------------------------------------
@@ -152,8 +152,8 @@ The fast color refinement algorithm used for this paper is made by W. van Veelen
 %% TODO %%
 % Describe algorithms, show concise calculations of time complexity
 %%
-In the following subsections, we give a general overview of the algorithms and analyze them:
-The computation time of a algorithms increases for iterations over the vertices in a graph. To calculate the worst-case time complexity of the algorithms, the number and places of the iterations over the vertices are analyzed.
+In the following subsection, a general overview and an analysis of the algorithms is given:
+The computation time of the algorithms increases for iterations over the vertices in a graph. To calculate the worst-case time complexity of the algorithms, the number and places of the iterations over the vertices are analyzed.
 
 The input and output for the algorithms are the same. The input is a graph with a possibly unstable  coloring. The output is a graph with stable coloring. However, the graphs do have a different structure to support their respective algorithm's refinement operation. We do not discuss the initialisation of these structures.
 
@@ -165,13 +165,13 @@ The basic algorithm gives all vertices in a graph with the same color but differ
 
 The basic implementation has several places where iterations over vertices take place. The code contains one main loop that has a worst-case of N iterations. Thereby the time complexity so far is $O(\boldsymbol{N})$, where $N = V(G)$. In this main loop an iteration takes place over all the vertices in the graph. The time complexity is now $O(N \cdot \boldsymbol{N})$. Each vertex is checked to see if it needs an update. If so, a new color dictionary is made and a new loop over the dictionary takes place. This makes the time complexity is $O(N \cdot N \cdot \boldsymbol{N})$ for making the dictionary and $O((N \cdot N)(N+\boldsymbol{N}))$ for iterating over the dictionary. Every color class in the dictionary is checked to see if the configuration has already been assigned a new color. If the the configuration is not yet know, a new color is assigned. In worst-case this new color operation costs N. The time complexity is $O((N \cdot N)(N+N+\boldsymbol{N}))$ so far.
 
-After the first loop over the vertices in the main loop, the algorithm iterates over all the vertices to color all the vertices correctly in the main dictionary. The time complexity worst-case at the end is $O((N \cdot (N+\boldsymbol{N})(N+N+N)) = O(N^3)$.
+After the first loop over the vertices in the main loop, the algorithm iterates over all the vertices to color all the vertices correctly in the main dictionary. The time complexity worst-case at the end is $O((N \cdot (N+\boldsymbol{N})(N+N+N)) = O(N^3)$. At the end, the worst-case time complexity is $O((N \cdot (N+\boldsymbol{N})(N+N+N)) = O(N^3)$.
 
 
 \subsection{Fast}
-With fast color refinement the colors that lead to refinements are tracked. These colors are maintained in a queue. If a color class is being refined, the class is split into two different classes, with one class keeping the old color. The algorithm terminates with a stable coloring if no color class needs refinement, in other words the queue is empty. 
+With fast color refinement the colorsclasses that could be used to refinement other color classes are tracked by putting them in a queue. If a color class is being refined, the class is split into two different classes, with one class keeping the old color. The algorithm terminates with a stable coloring if no color class needs refinement, in other words the queue is empty. 
 
-Fast color refinement is also analyzed. $N$ is again defined as $N=|V(G)|$. Determined is the number of times a vertex $v$ is refined in its worst-case. The color class of $v$ splits at least in half if it is getting refined. The split class with the most vertices in it keeps the original color. If vertex $v$ stays in this original class, $v$ is not refined by definition. It follows that if $v$ gets refined, the degree of the previous color class is at most two times the degree of its new class. Let $k$ be the times $v$ refines in the algorithm, then $2^k$ is the degree of $v$'s original color class.  The degree of the color class is worst-case $N$ if all vertices have the same amount of edges, so worst-case $k=log_2 N$. As shown by P. Bonsma in one of his lectures. \cite{presentation:slidesPartIII}
+Fast color refinement is also analyzed. $N$ is again defined as $N=|V(G)|$. Determined is the number of times a vertex $v$ is refined in its worst-case. The color class of $v$ splits at least in half if it is getting refined. The split class with the most vertices in it keeps the original color. If vertex $v$ stays in this original class, $v$ is not refined by definition. It follows that if $v$ gets refined, the degree of the previous color class is at most two times the degree of its new class. Let $k$ be the times $v$ is refined in the algorithm, then $2^k$ is the degree of $v$'s original color class.  The degree of the color class is worst-case $N$ if all vertices have the same amount of edges, so worst-case $k=log_2 N$. As shown by P. Bonsma in one of his lectures. \cite{presentation:slidesPartIII}
 
 With the number of edges in a graph times the number of vertices in that graph, the time complexity can be defined.\cite{presentation:slidesPartIII} The time complexity of fast color refinement is $O(m\cdot log n)$. 
 
@@ -185,22 +185,10 @@ With the number of edges in a graph times the number of vertices in that graph, 
 The measured computation times are visualized in \autoref{fig:basiconly} and \autoref{fig:fastonly}, the actual times can be found in \autoref{table:measurements}.
 
 \subsection{Basic Algorithm}
-\autoref{fig:basiconly} shows the measured computation times of the basic color refinement algorithm for the three paths graphs of sizes 5 through 5120. The larger sizes of this graph would have taken too long to compute within reasonable time.
-
-\begin{figure}[H]
-	\includegraphics[width=\linewidth]{basiconly}
-	\caption{The computation times of the basic color refinement algorithm for various sizes of the three paths graph.}
-	\label{fig:basiconly}
-\end{figure}
+\autoref{fig:basiconly} shows the measured computation times of the basic color refinement algorithm for the three paths graphs with path lengths 5 through 5120. The larger sizes of this graph would have taken too long to compute within reasonable time.
 
 \subsection{Fast Algorithm}
-\autoref{fig:fastonly} shows the measured computation times of the fast color refinement algorithm for the three paths graphs of sizes 5 through 20480. Larger variants of the graph were not available and therefore not used.
-
-\begin{figure}[H]
-	\includegraphics[width=\linewidth]{fastonly}
-	\caption{The computation times of the fast color refinement algorithm for various sizes of the three paths graph.}
-	\label{fig:fastonly}
-\end{figure}
+\autoref{fig:fastonly} shows the measured computation times of the fast color refinement algorithm for the three paths graphs with path lengths 5 through 20480. Larger variants of the graph were not available and therefore not used.
 
 %------------------------------------------------
 \section{Discussion} %Change section name?
@@ -211,50 +199,23 @@ The measured computation times are visualized in \autoref{fig:basiconly} and \au
 To verify the results of the time complexity calculations, the measurements have to be compared to functions of the expected time complexity. To more clearly see the relation between the two, diagrams with the relative size of the two were created.
 
 \subsection{Basic Algorithm}
-As the calculated worst-case time complexity of the basic color refinement algorithm is $O(N^3)$, \autoref{fig:basicfunctions} shows the measurements and the function $f(n)=x^3$. \autoref{fig:basicgrowth} then plots the relative size of the two on a logarithmic scale. It shows that $f(n)=x^3$ grows significantly faster than the measurements. Looking for a better fit, $f(n)=n^2$ was added to both diagrams. \autoref{fig:basicgrowth} indicates that the relative size is slowly decreasing and the growth of the measurements is approaching the growth of $f(n)=n^2$.
-
-\begin{figure}[H]
-	\includegraphics[width=\linewidth]{basicfunctions}
-	\caption{The computation times of the basic color refinement algorithm and the functions $f(n)=n^2$ and $f(n)=n^3$.}
-	\label{fig:basicfunctions}
-\end{figure}
-
-\begin{figure}[H]
-	\includegraphics[width=\linewidth]{basicdiff}
-	\caption{The relative growth of measured computation time of the basic algorithm compared to the functions $f(n)=n^2$ and $f(n)=n^3$.}
-	\label{fig:basicgrowth}
-\end{figure}
+As the calculated worst-case time complexity of the basic color refinement algorithm is $O(N^3)$, \autoref{fig:basicfunctions} shows the measurements and the function $f(n)=n^3$. \autoref{fig:basicgrowth} then plots the relative size of the two on a logarithmic scale. It shows that $f(n)=n^3$ grows significantly faster than the measurements. Looking for a better fit, $f(n)=n^2$ was added to both diagrams. \autoref{fig:basicgrowth} indicates that the relative size is slowly decreasing and the growth of the measurements is approaching the growth of $f(n)=n^2$.
 
 \subsection{Fast Algorithm}
-As the calculated worst-case time complexity of the fast color refinement algorithm is $O(M\cdot{}log(N)$, \autoref{fig:fastfunctions} shows the measurements and the function $f(n)=n\cdot{}log(n)$. \autoref{fig:fastgrowth} then plots the relative size of the two on a logarithmic scale. It shows that $f(n)=n\cdot{}log(n)$ grows faster than the measurements. Looking for a better fit, $f(n)=n$ was added to both diagrams. \autoref{fig:fastgrowth} indicates that $f(n)=n$ and the measurements are growing at the same rate, which implies that the time complexity for this specific type of graph might be closer to $\Theta(N)$.
-
-\begin{figure}[H]
-	\includegraphics[width=\linewidth]{fastfunctions}
-	\caption{The computation times of the fast color refinement algorithm and the functions $f(x)=n\cdot log(n)$ and $f(x)=n$.}
-	\label{fig:fastfunctions}
-\end{figure}
-
-\begin{figure}[H]
-	\includegraphics[width=\linewidth]{fastdiff}
-	\caption{The relative growth of measured computation time of the fast algorithm compared to the functions $f(x)=n\cdot log(n)$ and $f(x)=n$.}
-	\label{fig:fastgrowth}
-\end{figure}
+As the calculated worst-case time complexity of the fast color refinement algorithm is $O(M\cdot{}logN)$, \autoref{fig:fastfunctions} shows the measurements and the function $f(n)=n\cdot{}log(n)$. \autoref{fig:fastgrowth} then plots the relative size of the two on a logarithmic scale. It shows that $f(n)=n\cdot{}log(n)$ grows faster than the measurements. Looking for a better fit, $f(n)=n$ was added to both diagrams. \autoref{fig:fastgrowth} indicates that $f(n)=n$ and the measurements are growing at the same rate, which implies that the time complexity for this specific type of graph might be closer to $\Theta(N)$.
 
 %------------------------------------------------
 \section{Conclusions}
 \label{concl}
-The most obvious conclusion we draw from the worst-case complexity and computational results is that fast refinement is a faster algorithm than basic refinement. However, when we compare the computational results with their calculated worst-case complexity we observe some differences.
+The most obvious conclusion that can be drawn from the worst-case time complexity and computational results is that fast refinement is a faster algorithm than basic refinement. However, the computational results are compared with their calculated worst-case complexity some differences were observed.
 
-The complexity of basic refinement we determined is $O(N^3)$. When we look at the relative growth, it seems that the algorithm approaches $O(N^2)$. There could be two causes:
+The determined time complexity of basic refinement is $O(N^3)$. When looking at the relative growth, it seems that the algorithm approaches $O(N^2)$. There could be two causes:
 \begin{compactitem}
 	\item The determined complexity of $O(N^3)$ was faulty.
-	\item The type of graphs used, threegraphs, aproach a $O(N^2)$ complexity because of their structure. $O(N^3)$ was determined as worst-case.
+	\item The structure of the three paths graphs causes the basic algorithm to approach a $O(N^2)$ time complexity. $O(N^3)$ was determined as worst-case.
 \end{compactitem}
 
-The complexity of fast refinement we determined is $O(MlogN)$. When we look at the relative growth, it seems that the algorithm approaches a linear complexity. We attribute this to the structure of the type of graphs used, threegraphs. $O(MlogN)$ was determined as worst-case.
-%% TODO %%
-% Draw conlusions from both the results and discussion
-%%
+The determined time complexity of the fast algorithm is $O(MlogN)$. When looking at the relative growth, it seems that the algorithm approaches a linear complexity. This can be attributed to the structure of the type of graphs used, three paths. $O(MlogN)$ was determined as worst-case.
 
 %------------------------------------------------
 %	REFERENCE LIST
@@ -277,14 +238,55 @@ The complexity of fast refinement we determined is $O(MlogN)$. When we look at t
 \label{app}
 
 %------------------------------------------------
+\section{Algorithms}
+\label{app:algs}
+
+
+%------------------------------------------------
+\section{Figures}
+\label{app:figs}
+\begin{multicols}{2}
+\begin{figure}[H]
+	\includegraphics[width=\linewidth]{basiconly}
+	\caption{The computation times of the basic color refinement algorithm for various sizes of the three paths graph.}
+	\label{fig:basiconly}
+\end{figure}
+
+\begin{figure}[H]
+	\includegraphics[width=\linewidth]{fastonly}
+	\caption{The computation times of the fast color refinement algorithm for various sizes of the three paths graph.}
+	\label{fig:fastonly}
+\end{figure}
+
+\begin{figure}[H]
+	\includegraphics[width=\linewidth]{basicfunctions}
+	\caption{The computation times of the basic color refinement algorithm and the functions $f(n)=n^2$ and $f(n)=n^3$.}
+	\label{fig:basicfunctions}
+\end{figure}
+
+\begin{figure}[H]
+	\includegraphics[width=\linewidth]{basicdiff}
+	\caption{The relative growth of measured computation time of the basic algorithm compared to the functions $f(n)=n^2$ and $f(n)=n^3$.}
+	\label{fig:basicgrowth}
+\end{figure}
+
+\begin{figure}[H]
+	\includegraphics[width=\linewidth]{fastfunctions}
+	\caption{The computation times of the fast color refinement algorithm and the functions $f(x)=n\cdot log(n)$ and $f(x)=n$.}
+	\label{fig:fastfunctions}
+\end{figure}
+
+\begin{figure}[H]
+	\includegraphics[width=\linewidth]{fastdiff}
+	\caption{The relative growth of measured computation time of the fast algorithm compared to the functions $f(x)=n\cdot log(n)$ and $f(x)=n$.}
+	\label{fig:fastgrowth}
+\end{figure}
+\end{multicols}
+
+%------------------------------------------------
+\newpage
 \section{Tables} %Change section name
-\label{app:tab}
-%% TODO %%
-% Fill table with actual values
-%%
-%% NOTE %%
-% All current values are fictional values for testing purposes only
-%%
+\label{app:tabs}
 \begin{table}[h]\centering
 \begin{tabular}{|l|r@{.}l|r@{.}l|}
 \hline
