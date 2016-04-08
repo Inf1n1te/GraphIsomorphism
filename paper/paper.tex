@@ -243,23 +243,21 @@ The determined time complexity of the fast algorithm is $O(MlogN)$. When looking
 \label{app:algs}
 \begin{algorithm}
     \begin{algorithmic}[1] % The number tells where the line numbering should start
-        \Procedure{BasicColorRefinement}{Graph $G(V,E)$}
+        \Procedure{BasicColorRefinement}{Graph $G(V,E)$, Coloring $C$}
             \While{not stable} \Comment{Worst case loop over every vertex}
             	 \ForAll{$v \in V$}
-            	 	\State calculate neighborhood $nbs$ of $v$
-            	  	\If {$nbs$ of $v$ has not changed}
-    \State pass
-    				\Else
-    					\ForAll{$u \in V$}
-    						\State checks if the configuration is not yet known.
-    					\EndFor
-    					\If{the configuration is not yet known}
-    						\State assign a new color
-    					\EndIf
+            	 	\State calculate $v.nbs$ 
+            	  	\If{$v.nbs \neq Q[v.class]$} \Comment{nbs is different from previous iteration}
+            	  		\If{$v.nbs \in C$} \Comment{New configuration already has a new color}
+            	  			\State Assign $v$ this color
+            	  		\Else
+            	  			\State $v.class = newColor()$
+            	  			\State $C$.add($v.class$)            	  		
+            	  		\EndIf
     				\EndIf
             	  \EndFor
-				\ForAll{$v \in G(V)$}
-					\State update neighborhood dictionary
+				\ForAll{$v \in V)$}
+					\State update $C[v]$
 				\EndFor
             \EndWhile
         \EndProcedure \Comment{Graph $G$ now has a stable coloring}
