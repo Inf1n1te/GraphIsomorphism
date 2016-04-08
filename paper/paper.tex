@@ -7,7 +7,8 @@
 \usepackage{graphicx}
 
 \usepackage{algorithm}
-\usepackage{algpseudocode}
+\usepackage[noend]{algpseudocode}
+
 
 \usepackage{listings}
 \lstset{
@@ -242,30 +243,29 @@ The determined time complexity of the fast algorithm is $O(MlogN)$. When looking
 \label{app:algs}
 \begin{algorithm}
     \begin{algorithmic}[1] % The number tells where the line numbering should start
-        \Procedure{BasicColorRefinement}{$G$}
+        \Procedure{BasicColorRefinement}{Graph $G(V,E)$}
             \While{not stable} \Comment{Worst case loop over every vertex}
-            	 \For{every vertex $v \in G(V)$}
+            	 \ForAll{$v \in V$}
             	 	\State calculate neighborhood $nbs$ of $v$
             	  	\If {$nbs$ of $v$ has not changed}
     \State pass
     				\Else
-    					\For{every item in the dictionary}
+    					\ForAll{$u \in V$}
     						\State checks if the configuration is not yet known.
     					\EndFor
     					\If{the configuration is not yet known}
-    						\State assign a new color \
+    						\State assign a new color
     					\EndIf
     				\EndIf
             	  \EndFor
-				\For{every vertex in G}
+				\ForAll{$v \in G(V)$}
 					\State update neighborhood dictionary
 				\EndFor
-            \EndWhile\label{euclidendwhile}
-            \State \textbf{return} stable colored graph
-        \EndProcedure
+            \EndWhile
+        \EndProcedure \Comment{Graph $G$ now has a stable coloring}
     \end{algorithmic}
     \caption{Basic color refinement}
-    \label{euclid}
+    \label{alg:basic}
 \end{algorithm}
 
 %------------------------------------------------
