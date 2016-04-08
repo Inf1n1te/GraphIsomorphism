@@ -268,6 +268,33 @@ The determined time complexity of the fast algorithm is $O(MlogN)$. When looking
     \label{alg:basic}
 \end{algorithm}
 
+\begin{algorithm}
+    \begin{algorithmic}[1]
+    	\Procedure{FastColorRefinement}{$G(V,E)$}
+    		\While{$|Q| > 1$}
+    			\State $w$ = $Q$.next()
+    			\State for $i \geq 0 \in \mathbb{Z}$ let $D_i$ denote the set of $v \in V$ with $i$ neigbours in $w$ 
+    			\For{$c \in C \setminus w$}
+    				\State let $X_i = D_i \cap c \neq \emptyset$
+    				\For{all $X_i$}
+    					\If{$max(X) == X_i$}
+    						\State $c = X_i$
+    					\Else
+    						\State add $X_i$ as new class to $C$
+    					\EndIf    					
+    				\EndFor
+    			\If{$c \in Q$}
+    				\State $X = X \setminus c$
+    			\EndIf
+    			\State $Q$.add($X \setminus \max (X$))
+    			\EndFor 			
+    			
+    		\EndWhile 
+        \EndProcedure
+    \end{algorithmic}
+    \caption{Fast color refinement}
+\end{algorithm}
+
 %------------------------------------------------
 \section{Figures}
 \label{app:figs}
